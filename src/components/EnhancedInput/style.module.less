@@ -1,0 +1,24 @@
+@import (reference) '../../util/common.less';
+
+.enhancedInput {
+  font-family: @font-family;
+  line-height: @line-height;
+  font-size: @font-size;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  border: 1px solid @border;
+  border-radius: 3px;
+  background-color: @background;
+  height: 100%;
+  width: 100%;
+
+  &:hover {
+    border-color: @hover;
+  }
+
+  &:focus-within {
+    border-color: @focus;
+  }
+}
