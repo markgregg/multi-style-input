@@ -10,7 +10,7 @@ import { useSizeWatcher } from '@/hooks/useSizeWatcher';
 import {
   findChangePosition,
   getCursorPosition,
-  removeDoubleLineFeed,
+  trimCR,
 } from './functions';
 import { KeyBoardkeys } from '@/util/constants';
 
@@ -34,6 +34,7 @@ export const EditElement = React.memo(() => {
   } = useConfig((state) => state);
   const { setPosition, setSize } = useViewPort((state) => state);
   const {
+    parentElement,
     text,
     caretPosition,
     dropDown,
@@ -45,6 +46,12 @@ export const EditElement = React.memo(() => {
 
   useSizeWatcher(preRef.current, setSize);
 
+  React.useEffect(() => {
+    if (!parentElement && preRef.current) {
+      setParantElement(preRef.current);
+    }
+  }, [parentElement]);
+
   const setReference = React.useCallback((ref: HTMLPreElement | null) => {
     if (ref) {
       setParantElement(ref);
@@ -54,13 +61,12 @@ export const EditElement = React.memo(() => {
 
   const handleChange = React.useCallback(() => {
     if (onChange) {
-      const newText = preRef.current?.innerText ?? '';
-      const updatedText = removeDoubleLineFeed(newText);
-      const position = findChangePosition(text, updatedText);
+      const newText = trimCR(preRef.current?.textContent ?? '');
+      const position = findChangePosition(text, newText);
       const pos = getCursorPosition(preRef.current);
       updateCaretPosition(pos);
-      updateText(updatedText);
-      onChange(updatedText, position);
+      updateText(newText);
+      onChange(newText, position);
     }
   }, [onChange, updateText]);
 
@@ -90,7 +96,7 @@ export const EditElement = React.memo(() => {
       }
     }
     if (preRef.current) {
-      event.clipboardData.setData('text/plain', preRef.current.innerText);
+      event.clipboardData.setData('text/plain', preRef.current.textContent ?? '');
       event.preventDefault();
     }
   }, []);
@@ -135,7 +141,6 @@ export const EditElement = React.memo(() => {
           const pos = getCursorPosition(preRef.current);
           if (pos !== caretPosition) {
             updateCaretPosition(pos);
-            onCaretPositionChange(pos);
           }
         }
       }

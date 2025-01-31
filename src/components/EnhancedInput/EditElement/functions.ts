@@ -24,19 +24,12 @@ export const getCursorPosition = (pre: HTMLPreElement | null) => {
         if (child === target) {
           return (
             totalLength +
-            range.endOffset +
-            (child.childNodes.length > 0 &&
-            child.childNodes[0].nodeName === 'BR'
-              ? 1
-              : 0)
+            range.endOffset
           );
         }
         if (child && child.nodeName === '#text') {
           const textLength = (child.textContent ?? '').length;
           totalLength += textLength;
-        }
-        if (child && child.nodeName === 'BR') {
-          totalLength += 1;
         }
         if (child.childNodes.length > 0) {
           const length = getPosition(child, target);
@@ -115,9 +108,6 @@ const getTextLastNode = (element: HTMLElement): HTMLElement | null => {
   return null;
 };
 
-export const removeDoubleLineFeed = (text: string) =>
-  text.replaceAll('\n\n', '\n');
-
 export const findEndOfChange = (
   text: string,
   newText: string,
@@ -130,10 +120,20 @@ export const findEndOfChange = (
       return null;
     }
     if (text.length === count) {
-      return newText.length - count + 1;
+      return newText.length - count;
     }
     if (newText[newText.length - count] !== text[text.length - count]) {
-      return newText.length - count + 1;
+      return newText.length - count;
     }
   }
 };
+
+export const trimCR = (text: string) => {
+  let cr = 0;
+  for (let index = text.length - 1; index > 0 && text[index] === '\n'; index -= 1) {
+    cr += 1;
+  }
+  return (cr > 2)
+    ? text.substring(0, text.length - (cr - 2))
+    : text;
+}

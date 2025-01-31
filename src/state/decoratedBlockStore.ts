@@ -84,12 +84,12 @@ export const createDecoratedBlockStore = ({
           const blockElements: HtmlTextElement[] = [
             ...(start > lastPos
               ? [
-                  createHtmlText(
-                    lastPos,
-                    start - lastPos - 1,
-                    line.substring(lastPos - position, start - position),
-                  ),
-                ]
+                createHtmlText(
+                  lastPos,
+                  lastPos + (start - lastPos - 1),
+                  line.substring(lastPos - position, start - position),
+                ),
+              ]
               : []),
             createHtmlStyledText(
               start,
@@ -107,8 +107,16 @@ export const createDecoratedBlockStore = ({
         lineElements.push(
           createHtmlText(
             lastPos,
-            lastPos + (line.length - (lastPos - position)) - 1,
-            line.substring(lastPos - position),
+            lastPos + (line.length - (lastPos - position)),
+            line.substring(lastPos - position) + '\n',
+          ),
+        );
+      } else {
+        lineElements.push(
+          createHtmlText(
+            lastPos,
+            lastPos,
+            '\n',
           ),
         );
       }
@@ -173,7 +181,7 @@ export const createDecoratedBlockStore = ({
     const div = document.createElement('div');
     insertOrAppend(parentElement, div, targetNode);
     if (elements.length === 0) {
-      createTextElement(div, '');
+      createTextElement(div, '\n');
     } else {
       elements.forEach((element) => {
         if (element.type === 't') {
@@ -232,11 +240,8 @@ export const createDecoratedBlockStore = ({
       }
       cnt += 1;
     }
-    if (cnt < domDiv.childNodes.length) {
-      while (cnt < domDiv.childNodes.length) {
-        domDiv.removeChild(domDiv.childNodes[cnt]); // remove excess elements
-      }
-      createTextElement(domDiv, '\n');
+    while (cnt < domDiv.childNodes.length) {
+      domDiv.removeChild(domDiv.childNodes[cnt]); // remove excess elements
     }
   };
 
@@ -435,13 +440,13 @@ export const createDecoratedBlockStore = ({
           customElements,
           dropDown: dropDownId
             ? ({
-                id: dropDownId,
-                dropDown,
-                ...getElementPosition(
-                  document.getElementById(dropDownId) as HTMLElement,
-                  true,
-                ),
-              } as DropDownListElement)
+              id: dropDownId,
+              dropDown,
+              ...getElementPosition(
+                document.getElementById(dropDownId) as HTMLElement,
+                true,
+              ),
+            } as DropDownListElement)
             : null,
         };
       }),
