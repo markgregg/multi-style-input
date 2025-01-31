@@ -28,9 +28,7 @@ export const StateProvider = React.memo(
     } = props;
     const configStore = React.useMemo(
       () => createConfigStore(props),
-      [
-        onChange
-      ],
+      [onChange],
     );
 
     const decoratedBlockStore = React.useMemo(
@@ -48,10 +46,7 @@ export const StateProvider = React.memo(
     const viewPortStore = React.useMemo(createViewPortStore, []);
     const managedStore = React.useMemo(
       () => createManagedStore(props),
-      [
-        text,
-        textBlocks
-      ],
+      [text, textBlocks],
     );
     const optionsStore = React.useMemo(createDropDownOptionsStore, []);
 

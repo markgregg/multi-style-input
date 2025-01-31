@@ -1,7 +1,6 @@
-import { ComponentProps } from "../componentProps";
-import { DecoratedBlock } from "../decoratedBlock";
-import { DropDownOptions } from "../dropDownOptions";
-
+import { ComponentProps } from '../componentProps';
+import { DecoratedBlock } from '../decoratedBlock';
+import { DropDownOptions } from '../dropDownOptions';
 
 export interface TextElement {
   text: string;

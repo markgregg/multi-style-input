@@ -1,14 +1,14 @@
 import { Locator, Page } from "@playwright/test"
 
-export interface SmartFilterPage {
+export interface SmartInputPage {
   readonly filterBar: Locator,
 
   use: (example: string) => void;
   pause: (milliseconds: number) => void;
 }
 
-export const createSmartFilterPage = (page: Page): SmartFilterPage => {
-  const filterBar = page.locator('#sf-filter-bar');
+export const createSmartFilterPage = (page: Page): SmartInputPage => {
+  const filterBar = page.locator('#si-enhanced-Input');
 
   return {
     filterBar,

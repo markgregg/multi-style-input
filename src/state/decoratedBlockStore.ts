@@ -1,7 +1,18 @@
 import { StoreApi, UseBoundStore, create } from 'zustand';
-import { DecoratedBlockState, DecoratedElement, DropDownListElement } from '@/types/State';
-import { BlockEventProps, DecoratedBlock, SmartElementMouseEvent } from '@/types';
-import { findEndOfChange, setCursorPosition } from '@/components/EnhancedInput/EditElement/functions';
+import {
+  DecoratedBlockState,
+  DecoratedElement,
+  DropDownListElement,
+} from '@/types/State';
+import {
+  BlockEventProps,
+  DecoratedBlock,
+  SmartElementMouseEvent,
+} from '@/types';
+import {
+  findEndOfChange,
+  setCursorPosition,
+} from '@/components/EnhancedInput/EditElement/functions';
 
 interface HtmlBase {
   start: number;
@@ -31,63 +42,107 @@ export const createDecoratedBlockStore = ({
   onBlockMouseLeave,
   onBlockMouseOver,
 }: BlockEventProps): UseBoundStore<StoreApi<DecoratedBlockState>> => {
+  const createHtmlText = (
+    start: number,
+    end: number,
+    text: string,
+  ): HtmlText => ({ type: 't', start, end, text });
 
-  const createHtmlText = (start: number, end: number, text: string): HtmlText =>
-    ({ type: 't', start, end, text });
+  const createHtmlStyledText = (
+    start: number,
+    end: number,
+    text: string,
+    id: string,
+    style?: string,
+    existingStyle?: string,
+  ): HtmlStyledText => ({
+    type: 's',
+    start,
+    end,
+    text,
+    id,
+    style,
+    existingStyle,
+  });
 
-  const createHtmlStyledText = (start: number, end: number, text: string, id: string, style?: string, existingStyle?: string): HtmlStyledText =>
-    ({ type: 's', start, end, text, id, style, existingStyle });
-
-  const extractHtmlElements = (text: string, textBlocks: DecoratedBlock[], existingTextBlocks: DecoratedBlock[]): HtmlTextElement[][] => {
+  const extractHtmlElements = (
+    text: string,
+    textBlocks: DecoratedBlock[],
+    existingTextBlocks: DecoratedBlock[],
+  ): HtmlTextElement[][] => {
     let position = 0;
     textBlocks.sort((a, b) => a.start - b.start);
-    const divElements = text
-      .split('\n')
-      .map((line) => {
-        let lastPos = position;
-        const lineElements = textBlocks
-          .filter(({ start, length }) => start >= position && start + length <= position + line.length)
-          .flatMap(({ id, start, length, style }) => {
-            const previousBlock = existingTextBlocks.find((b) => b.id === id);
-            const blockElements: HtmlTextElement[] = [
-              ...(start > lastPos
-                ? [createHtmlText(lastPos, start - lastPos - 1, line.substring(lastPos - position, start - position))]
-                : []
-              ),
-              createHtmlStyledText(start, start + length - 1, line.substring(start - position, (start - position) + length), id, style, previousBlock?.style),
-            ];
-            lastPos = start + length;
-            return blockElements;
-          });
-        if (lastPos < position + line.length) {
-
-          lineElements.push(createHtmlText(lastPos, lastPos + (line.length - (lastPos - position)) - 1, line.substring(lastPos - position)))
-        }
-        position += line.length + 1;
-        return lineElements;
-      });
+    const divElements = text.split('\n').map((line) => {
+      let lastPos = position;
+      const lineElements = textBlocks
+        .filter(
+          ({ start, length }) =>
+            start >= position && start + length <= position + line.length,
+        )
+        .flatMap(({ id, start, length, style }) => {
+          const previousBlock = existingTextBlocks.find((b) => b.id === id);
+          const blockElements: HtmlTextElement[] = [
+            ...(start > lastPos
+              ? [
+                  createHtmlText(
+                    lastPos,
+                    start - lastPos - 1,
+                    line.substring(lastPos - position, start - position),
+                  ),
+                ]
+              : []),
+            createHtmlStyledText(
+              start,
+              start + length - 1,
+              line.substring(start - position, start - position + length),
+              id,
+              style,
+              previousBlock?.style,
+            ),
+          ];
+          lastPos = start + length;
+          return blockElements;
+        });
+      if (lastPos < position + line.length) {
+        lineElements.push(
+          createHtmlText(
+            lastPos,
+            lastPos + (line.length - (lastPos - position)) - 1,
+            line.substring(lastPos - position),
+          ),
+        );
+      }
+      position += line.length + 1;
+      return lineElements;
+    });
     return divElements;
-  }
+  };
 
   const updateDom = (
     parentElement: HTMLPreElement,
     text: string,
     textBlocks: DecoratedBlock[],
-    existingTextBlocks: DecoratedBlock[]
+    existingTextBlocks: DecoratedBlock[],
   ) => {
-    const divElements = extractHtmlElements(text, textBlocks, existingTextBlocks,);
+    const divElements = extractHtmlElements(
+      text,
+      textBlocks,
+      existingTextBlocks,
+    );
     let divCnt = 0;
     while (divCnt < divElements.length) {
       const div = divElements[divCnt];
-      const domDiv = divCnt < parentElement.childNodes.length ? parentElement.childNodes[divCnt] as HTMLDivElement : null;
+      const domDiv =
+        divCnt < parentElement.childNodes.length
+          ? (parentElement.childNodes[divCnt] as HTMLDivElement)
+          : null;
       if (
         divCnt === 0 &&
         parentElement.childNodes.length > 0 &&
         domDiv &&
         domDiv.nodeName === '#text'
       ) {
-        if (div.length === 1 &&
-          div[0].type === 't') {
+        if (div.length === 1 && div[0].type === 't') {
           if (domDiv.textContent !== div[0].text) {
             domDiv.textContent = div[0].text;
           }
@@ -106,9 +161,9 @@ export const createDecoratedBlockStore = ({
       divCnt += 1;
     }
     while (divCnt < parentElement.childNodes.length) {
-      parentElement.removeChild(parentElement.childNodes[divCnt]); //remove excess elements
+      parentElement.removeChild(parentElement.childNodes[divCnt]); // remove excess elements
     }
-  }
+  };
 
   const createDivElement = (
     parentElement: HTMLPreElement,
@@ -128,16 +183,18 @@ export const createDecoratedBlockStore = ({
         }
       });
     }
-  }
+  };
 
   const updateDivElement = (
     elements: HtmlTextElement[],
     domDiv: HTMLDivElement,
   ) => {
-    if (elements.length === 1 &&
+    if (
+      elements.length === 1 &&
       elements[0].type === 't' &&
       domDiv.childNodes.length === 1 &&
-      domDiv.childNodes[0].nodeName === '#text') {
+      domDiv.childNodes[0].nodeName === '#text'
+    ) {
       if (domDiv.childNodes[0].textContent !== elements[0].text) {
         domDiv.childNodes[0].textContent = elements[0].text;
       }
@@ -146,15 +203,15 @@ export const createDecoratedBlockStore = ({
     let cnt = 0;
     while (cnt < elements.length) {
       const element = elements[cnt];
-      const domElement = cnt < domDiv.childNodes.length ? domDiv.childNodes[cnt] as HTMLElement : null;
+      const domElement =
+        cnt < domDiv.childNodes.length
+          ? (domDiv.childNodes[cnt] as HTMLElement)
+          : null;
       if (element.type === 's') {
         if (domElement && element.id !== domElement.id) {
           if (shouldRemoveElement(domDiv, cnt, element.id)) {
             domDiv.removeChild(domElement);
-            updateElement(
-              domDiv.childNodes[cnt] as HTMLElement,
-              element
-            );
+            updateElement(domDiv.childNodes[cnt] as HTMLElement, element);
           } else {
             createStyledTextElement(domDiv, element, domElement);
           }
@@ -173,15 +230,15 @@ export const createDecoratedBlockStore = ({
       } else {
         createTextElement(domDiv, element.text, domElement);
       }
-      cnt = cnt + 1;
+      cnt += 1;
     }
     if (cnt < domDiv.childNodes.length) {
       while (cnt < domDiv.childNodes.length) {
-        domDiv.removeChild(domDiv.childNodes[cnt]); //remove excess elements
+        domDiv.removeChild(domDiv.childNodes[cnt]); // remove excess elements
       }
       createTextElement(domDiv, '\n');
     }
-  }
+  };
 
   const createTextElement = (
     parentElement: HTMLElement,
@@ -190,7 +247,7 @@ export const createDecoratedBlockStore = ({
   ) => {
     const text = document.createTextNode(elementText);
     insertOrAppend(parentElement, text, targetNode);
-  }
+  };
 
   const createStyledTextElement = (
     parentElement: HTMLElement,
@@ -207,19 +264,14 @@ export const createDecoratedBlockStore = ({
     addListeners(span);
   };
 
-  const shouldRemoveElement = (
-    pre: HTMLElement,
-    cnt: number,
-    id: string,
-  ) => {
-    return pre.childNodes.length > cnt + 1 &&
-      'id' in pre.childNodes[cnt + 1] &&
-      id === (pre.childNodes[cnt + 1] as HTMLElement).id;
-  }
+  const shouldRemoveElement = (pre: HTMLElement, cnt: number, id: string) =>
+    pre.childNodes.length > cnt + 1 &&
+    'id' in pre.childNodes[cnt + 1] &&
+    id === (pre.childNodes[cnt + 1] as HTMLElement).id;
 
   const updateElement = (
     html: HTMLElement,
-    { text, style, existingStyle }: HtmlStyledText
+    { text, style, existingStyle }: HtmlStyledText,
   ) => {
     if (html.textContent !== text) {
       // eslint-disable-next-line no-param-reassign
@@ -251,25 +303,25 @@ export const createDecoratedBlockStore = ({
     });
     const handleClick = (event: MouseEvent) => {
       onBlockClick?.(eventParametrs(event));
-    }
+    };
     const handleDblClick = (event: MouseEvent) => {
       onBlockDblClick?.(eventParametrs(event));
-    }
+    };
     const handleMouseDown = (event: MouseEvent) => {
       onBlockMouseDown?.(eventParametrs(event));
-    }
+    };
     const handleMouseUp = (event: MouseEvent) => {
       onBlockMouseUp?.(eventParametrs(event));
-    }
+    };
     const handleMouseEnter = (event: MouseEvent) => {
       onBlockMouseEnter?.(eventParametrs(event));
-    }
+    };
     const handleMouseLeave = (event: MouseEvent) => {
       onBlockMouseLeave?.(eventParametrs(event));
-    }
+    };
     const handleMouseOver = (event: MouseEvent) => {
       onBlockMouseOver?.(eventParametrs(event));
-    }
+    };
     if (onBlockClick) {
       element.addEventListener('click', handleClick);
     }
@@ -293,15 +345,15 @@ export const createDecoratedBlockStore = ({
     }
   };
 
-  const closeSpan = (
-    newText: string, newTextBlocks: DecoratedBlock[]
-  ) => {
+  const closeSpan = (newText: string, newTextBlocks: DecoratedBlock[]) => {
     if (newTextBlocks.length === 0) {
       return false;
     }
-    const { start, length } = newTextBlocks.sort((a, b) => a.start - b.start)[newTextBlocks.length - 1];
+    const { start, length } = newTextBlocks.sort((a, b) => a.start - b.start)[
+      newTextBlocks.length - 1
+    ];
     return start + length + 1 >= newText.length;
-  }
+  };
 
   const getElementPosition = (
     htmlElement: HTMLElement,
@@ -321,61 +373,77 @@ export const createDecoratedBlockStore = ({
     customElements: [],
     dropDown: null,
     caretPosition: 0,
-    setParantElement: (parentElement: HTMLPreElement) => set(() => ({ parentElement })),
+    setParantElement: (parentElement: HTMLPreElement) =>
+      set(() => ({ parentElement })),
     updateText: (text: string) => set(() => ({ text })),
-    updateCaretPosition: (caretPosition: number) => set(() => ({ caretPosition })),
-    update: (newText: string, newTextBlocks: DecoratedBlock[]) => set((state) => {
-      const { parentElement, text, textBlocks, caretPosition } = state;
-      if (!parentElement ||
-        (text.length > 1 &&
-          text === newText &&
-          JSON.stringify(textBlocks) === JSON.stringify(newTextBlocks)
-          && !closeSpan(text, textBlocks)
-          && text[text.length - 1] !== '\n')
-      ) {
-        return {};
-      }
-      updateDom(parentElement, newText, newTextBlocks, textBlocks);
-      const newPosition = findEndOfChange(text, newText) ?? caretPosition;
-      setCursorPosition(parentElement, newPosition);
-
-      const customElements = newTextBlocks.filter((block) => 'Decorator' in block).map((block) => {
-        const { id, start, length, Decorator, clasName, decoratorStyle, customProps } = block;
-        const textElement = document.getElementById(id);
-        if (!textElement) {
-          return null;
+    updateCaretPosition: (caretPosition: number) =>
+      set(() => ({ caretPosition })),
+    update: (newText: string, newTextBlocks: DecoratedBlock[]) =>
+      set((state) => {
+        const { parentElement, text, textBlocks, caretPosition } = state;
+        if (
+          !parentElement ||
+          (text.length > 1 &&
+            text === newText &&
+            JSON.stringify(textBlocks) === JSON.stringify(newTextBlocks) &&
+            !closeSpan(text, textBlocks) &&
+            text[text.length - 1] !== '\n')
+        ) {
+          return {};
         }
-        const elementText = textElement.textContent ?? '';
+        updateDom(parentElement, newText, newTextBlocks, textBlocks);
+        const newPosition = findEndOfChange(text, newText) ?? caretPosition;
+        setCursorPosition(parentElement, newPosition);
+
+        const customElements = newTextBlocks
+          .filter((block) => 'Decorator' in block)
+          .map((block) => {
+            const {
+              id,
+              start,
+              length,
+              Decorator,
+              clasName,
+              decoratorStyle,
+              customProps,
+            } = block;
+            const textElement = document.getElementById(id);
+            if (!textElement) {
+              return null;
+            }
+            const elementText = textElement.textContent ?? '';
+            return {
+              id,
+              text: elementText,
+              start,
+              end: start + elementText.length,
+              length,
+              Decorator,
+              textElement,
+              clasName,
+              decoratorStyle,
+              customProps,
+              ...getElementPosition(textElement, false),
+            };
+          })
+          .filter((block) => block !== null) as DecoratedElement[];
+        const { id: dropDownId, dropDown } =
+          newTextBlocks.find((block) => 'dropDown' in block) ?? {};
         return {
-          id,
-          text: elementText,
-          start,
-          end: start + elementText.length,
-          length,
-          Decorator,
-          textElement,
-          clasName,
-          decoratorStyle,
-          customProps,
-          ...getElementPosition(textElement, false),
+          text: newText,
+          textBlocks: newTextBlocks,
+          customElements,
+          dropDown: dropDownId
+            ? ({
+                id: dropDownId,
+                dropDown,
+                ...getElementPosition(
+                  document.getElementById(dropDownId) as HTMLElement,
+                  true,
+                ),
+              } as DropDownListElement)
+            : null,
         };
-      }).filter((block) => block !== null) as DecoratedElement[];
-      const {
-        id: dropDownId,
-        dropDown,
-      } = newTextBlocks.find((block) => 'dropDown' in block) ?? {};
-      return {
-        text: newText,
-        textBlocks: newTextBlocks,
-        customElements,
-        dropDown: dropDownId
-          ? {
-            id: dropDownId,
-            dropDown,
-            ...getElementPosition(document.getElementById(dropDownId) as HTMLElement, true),
-          } as DropDownListElement
-          : null,
-      };
-    }),
+      }),
   }));
-}
+};

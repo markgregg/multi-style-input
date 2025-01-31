@@ -1,4 +1,1 @@
-
-
-
-export interface UIProperties { }
+export interface UIProperties {}

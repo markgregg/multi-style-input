@@ -10,4 +10,3 @@ export const createViewPortStore = (): UseBoundStore<StoreApi<ViewPortState>> =>
     setPosition: (top: number, left: number) => set(() => ({ top, left })),
     setSize: (width: number, height: number) => set(() => ({ width, height })),
   }));
-

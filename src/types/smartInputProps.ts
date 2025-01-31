@@ -1,8 +1,7 @@
-import { BlockEventProps } from "./blockEventProps";
-import { DecoratedBlock } from "./decoratedBlock";
-import { DropDownProps } from "./dropDownProps";
-import { UIProperties } from "./uiProperties";
-
+import { BlockEventProps } from './blockEventProps';
+import { DecoratedBlock } from './decoratedBlock';
+import { DropDownProps } from './dropDownProps';
+import { UIProperties } from './uiProperties';
 
 export interface SmartInputProps extends UIProperties, BlockEventProps {
   text: string;

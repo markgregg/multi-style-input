@@ -19,8 +19,8 @@ export const createConfigStore = ({
   onMouseOver,
   onKeyDown,
   onKeyUp,
-}: SmartInputProps): UseBoundStore<StoreApi<ConfigState>> => {
-  return create<ConfigState>(() => ({
+}: SmartInputProps): UseBoundStore<StoreApi<ConfigState>> =>
+  create<ConfigState>(() => ({
     tabIndex,
     DropDownComponent,
     onItemSelected,
@@ -38,4 +38,3 @@ export const createConfigStore = ({
     onKeyDown,
     onKeyUp,
   }));
-};

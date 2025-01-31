@@ -1,10 +1,10 @@
 import test from "@playwright/test";
-import { SmartFilterPage, createSmartFilterPage } from "./SmartFilterPage";
+import { SmartInputPage, createSmartFilterPage } from "./SmartViewPage";
 
 const SmartFilterTest = test.extend<{
-  smartFilterPage: SmartFilterPage;
+  smartInputPage: SmartInputPage;
 }>({
-  smartFilterPage: async ({ page }, use) => {
+  smartInputPage: async ({ page }, use) => {
     await use(createSmartFilterPage(page));
   }
 });

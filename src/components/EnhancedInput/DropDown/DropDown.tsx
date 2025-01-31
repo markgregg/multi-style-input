@@ -1,30 +1,24 @@
 import React from 'react';
-import { useBlockStore, useConfig, useOptions, useViewPort } from '@/state/useState';
+import {
+  useBlockStore,
+  useConfig,
+  useOptions,
+  useViewPort,
+} from '@/state/useState';
 import s from './style.module.less';
 
 export const DropDown = React.memo(() => {
-  const {
-    DropDownComponent,
-    onItemSelected
-  } = useConfig((state) => state);
+  const { DropDownComponent, onItemSelected } = useConfig((state) => state);
   const {
     id,
     top,
     left,
-    dropDown: {
-      activation,
-      options = []
-    } = {},
+    dropDown: { activation, options = [] } = {},
   } = useBlockStore((state) => state.dropDown) ?? {};
-  const {
-    top: clientTop,
-    left: clientLeft,
-  } = useViewPort((state) => state);
-  const {
-    activeOptionIdx,
-    setOptions,
-    setActiveOption,
-  } = useOptions((state) => state);
+  const { top: clientTop, left: clientLeft } = useViewPort((state) => state);
+  const { activeOptionIdx, setOptions, setActiveOption } = useOptions(
+    (state) => state,
+  );
 
   React.useEffect(() => {
     setOptions(options);
@@ -33,7 +27,7 @@ export const DropDown = React.memo(() => {
   /* move to assoicated text element */
   const handleLeftMouseDown = React.useCallback(() => {
     if (activation === 'mouseover') {
-      //hideDropDown();
+      // hideDropDown();
     }
   }, [activation]);
 
@@ -53,7 +47,6 @@ export const DropDown = React.memo(() => {
     setActiveOption(index);
   }, []);
 
-
   return (
     <div
       className={s.dropDown}
@@ -62,13 +55,16 @@ export const DropDown = React.memo(() => {
         left: (left ?? 0) - clientLeft,
       }}
     >
-      {DropDownComponent && <DropDownComponent
-        onMouseLeftDropDown={handleLeftMouseDown}
-        onMouseEnteredDropDown={handleMouseEnter}
-        options={options}
-        onOptionSelected={handleOptionSelected}
-        activeIndex={activeOptionIdx}
-        onActiveOptionChanged={handleActiveOptionChanged}
-      />}
-    </div>);
+      {DropDownComponent && (
+        <DropDownComponent
+          onMouseLeftDropDown={handleLeftMouseDown}
+          onMouseEnteredDropDown={handleMouseEnter}
+          options={options}
+          onOptionSelected={handleOptionSelected}
+          activeIndex={activeOptionIdx}
+          onActiveOptionChanged={handleActiveOptionChanged}
+        />
+      )}
+    </div>
+  );
 });

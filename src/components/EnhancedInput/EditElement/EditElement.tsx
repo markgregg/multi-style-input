@@ -1,8 +1,17 @@
 import React from 'react';
-import { useBlockStore, useConfig, useOptions, useViewPort } from '@/state/useState';
+import {
+  useBlockStore,
+  useConfig,
+  useOptions,
+  useViewPort,
+} from '@/state/useState';
 import s from './style.module.less';
 import { useSizeWatcher } from '@/hooks/useSizeWatcher';
-import { findChangePosition, getCursorPosition, removeDoubleLineFeed } from './functions';
+import {
+  findChangePosition,
+  getCursorPosition,
+  removeDoubleLineFeed,
+} from './functions';
 import { KeyBoardkeys } from '@/util/constants';
 
 export const EditElement = React.memo(() => {
@@ -23,10 +32,7 @@ export const EditElement = React.memo(() => {
     onKeyDown,
     onKeyUp,
   } = useConfig((state) => state);
-  const {
-    setPosition,
-    setSize,
-  } = useViewPort((state) => state);
+  const { setPosition, setSize } = useViewPort((state) => state);
   const {
     text,
     caretPosition,
@@ -35,11 +41,7 @@ export const EditElement = React.memo(() => {
     updateText,
     updateCaretPosition,
   } = useBlockStore((state) => state);
-  const {
-    activeOption,
-    next,
-    prev,
-  } = useOptions((state) => state);
+  const { activeOption, next, prev } = useOptions((state) => state);
 
   useSizeWatcher(preRef.current, setSize);
 
@@ -78,7 +80,10 @@ export const EditElement = React.memo(() => {
     const selection = document.getSelection();
     if (selection) {
       const range = selection.getRangeAt(0);
-      if (range.startContainer !== range.endContainer || range.startOffset !== range.endOffset) {
+      if (
+        range.startContainer !== range.endContainer ||
+        range.startOffset !== range.endOffset
+      ) {
         event.clipboardData.setData('text/plain', selection.toString());
         event.preventDefault();
         return;
@@ -90,57 +95,67 @@ export const EditElement = React.memo(() => {
     }
   }, []);
 
-  const handleCut = React.useCallback((event: React.ClipboardEvent) => {
-    const selection = document.getSelection();
-    if (selection) {
-      const range = selection.getRangeAt(0);
-      if (range.startContainer !== range.endContainer || range.startOffset !== range.endOffset) {
-        const cutText = selection.toString()
-        event.clipboardData.setData('text/plain', cutText);
-        const newText = text.replace(cutText, '');
-        updateText(newText);
-        if (onChange) {
-          const position = findChangePosition(text, newText);
-          onChange(newText, position);
-        }
-        event.preventDefault();
-        return;
-      }
-    }
-  }, [text, onChange]);
-
-  const handleKeyUp = React.useCallback((event: React.KeyboardEvent<HTMLPreElement>) => {
-    if (event.key === KeyBoardkeys.ArrowLeft ||
-      event.key === KeyBoardkeys.ArrowRight ||
-      event.key === KeyBoardkeys.ArrowUp ||
-      event.key === KeyBoardkeys.ArrowDown ||
-      event.key === KeyBoardkeys.Home ||
-      event.key === KeyBoardkeys.End ||
-      event.key === KeyBoardkeys.PageDown ||
-      event.key === KeyBoardkeys.PageUp
-    ) {
-      if (onCaretPositionChange) {
-        const pos = getCursorPosition(preRef.current);
-        if (pos !== caretPosition) {
-          updateCaretPosition(pos);
-          onCaretPositionChange(pos);
+  const handleCut = React.useCallback(
+    (event: React.ClipboardEvent) => {
+      const selection = document.getSelection();
+      if (selection) {
+        const range = selection.getRangeAt(0);
+        if (
+          range.startContainer !== range.endContainer ||
+          range.startOffset !== range.endOffset
+        ) {
+          const cutText = selection.toString();
+          event.clipboardData.setData('text/plain', cutText);
+          const newText = text.replace(cutText, '');
+          updateText(newText);
+          if (onChange) {
+            const position = findChangePosition(text, newText);
+            onChange(newText, position);
+          }
+          event.preventDefault();
         }
       }
-    }
-    if (onKeyUp) {
-      onKeyUp(event);
-    }
-  }, []);
+    },
+    [text, onChange],
+  );
 
-  const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
-    let handled = false;
-    switch (event.key) {
-      case KeyBoardkeys.Escape:
-        //setActiveDropDown(null);
-        break;
-      case KeyBoardkeys.Z:
-      case KeyBoardkeys.z:
-        /*if (event.ctrlKey) {
+  const handleKeyUp = React.useCallback(
+    (event: React.KeyboardEvent<HTMLPreElement>) => {
+      if (
+        event.key === KeyBoardkeys.ArrowLeft ||
+        event.key === KeyBoardkeys.ArrowRight ||
+        event.key === KeyBoardkeys.ArrowUp ||
+        event.key === KeyBoardkeys.ArrowDown ||
+        event.key === KeyBoardkeys.Home ||
+        event.key === KeyBoardkeys.End ||
+        event.key === KeyBoardkeys.PageDown ||
+        event.key === KeyBoardkeys.PageUp
+      ) {
+        if (onCaretPositionChange) {
+          const pos = getCursorPosition(preRef.current);
+          if (pos !== caretPosition) {
+            updateCaretPosition(pos);
+            onCaretPositionChange(pos);
+          }
+        }
+      }
+      if (onKeyUp) {
+        onKeyUp(event);
+      }
+    },
+    [],
+  );
+
+  const handleKeyDown = React.useCallback(
+    (event: React.KeyboardEvent) => {
+      let handled = false;
+      switch (event.key) {
+        case KeyBoardkeys.Escape:
+          // setActiveDropDown(null);
+          break;
+        case KeyBoardkeys.Z:
+        case KeyBoardkeys.z:
+          /* if (event.ctrlKey) {
           const prev = undo();
           if (prev) {
             if (onChange) {
@@ -149,45 +164,45 @@ export const EditElement = React.memo(() => {
           }
           event.preventDefault();
           event.stopPropagation();
-        }*/
-        break;
-      case KeyBoardkeys.ArrowUp:
-        if (dropDown) {
-          prev();
-          handled = true;
-        }
-        break;
-      case KeyBoardkeys.ArrowDown:
-        if (dropDown) {
-          next();
-          handled = true;
-        }
-        break;
-      case KeyBoardkeys.Space:
-      case KeyBoardkeys.Enter:
-        if (dropDown) {
-          if (onItemSelected) {
-            onItemSelected(dropDown.id ?? '', activeOption);
+        } */
+          break;
+        case KeyBoardkeys.ArrowUp:
+          if (dropDown) {
+            prev();
             handled = true;
           }
-        }
-        break;
-      default:
-        break;
-    }
-    if (handled) {
-      event.preventDefault();
-      event.stopPropagation();
-    } else {
-      if (onKeyDown) {
+          break;
+        case KeyBoardkeys.ArrowDown:
+          if (dropDown) {
+            next();
+            handled = true;
+          }
+          break;
+        case KeyBoardkeys.Space:
+        case KeyBoardkeys.Enter:
+          if (dropDown) {
+            if (onItemSelected) {
+              onItemSelected(dropDown.id ?? '', activeOption);
+              handled = true;
+            }
+          }
+          break;
+        default:
+          break;
+      }
+      if (handled) {
+        event.preventDefault();
+        event.stopPropagation();
+      } else if (onKeyDown) {
         onKeyDown(event);
       }
-    }
-  }, [dropDown, activeOption, onKeyDown, next, prev, onItemSelected]);
+    },
+    [dropDown, activeOption, onKeyDown, next, prev, onItemSelected],
+  );
 
   return (
     <pre
-      id='si-edit-element'
+      id="si-edit-element"
       className={s.editElement}
       contentEditable="true"
       ref={setReference}

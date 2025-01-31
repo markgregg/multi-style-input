@@ -6,8 +6,7 @@ export const createManagedStore = ({
   text,
   textBlocks,
 }: SmartInputProps): UseBoundStore<StoreApi<ManagedState>> =>
-  create<ManagedState>((set) => ({
+  create<ManagedState>(() => ({
     text,
     textBlocks,
-  }),
-  );
+  }));

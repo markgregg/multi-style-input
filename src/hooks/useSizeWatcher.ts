@@ -1,6 +1,9 @@
 import React from 'react';
 
-export const useSizeWatcher = (element: HTMLElement | null, handler: (width: number, height: number) => void) => {
+export const useSizeWatcher = (
+  element: HTMLElement | null,
+  handler: (width: number, height: number) => void,
+) => {
   React.useEffect(() => {
     const observer = new ResizeObserver(() => {
       const { width, height } = element?.getBoundingClientRect() ?? {};

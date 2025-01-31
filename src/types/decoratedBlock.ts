@@ -1,5 +1,5 @@
-import { ComponentProps } from "./componentProps"
-import { DropDownOptions } from "./dropDownOptions";
+import { ComponentProps } from './componentProps';
+import { DropDownOptions } from './dropDownOptions';
 
 export interface DecoratedBlock {
   /* unique id to identify the block */

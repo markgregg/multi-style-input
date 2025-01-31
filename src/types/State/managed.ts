@@ -1,6 +1,6 @@
-import { DecoratedBlock } from "../decoratedBlock";
+import { DecoratedBlock } from '../decoratedBlock';
 
 export interface ManagedState {
-    text: string;
-    textBlocks: DecoratedBlock[];
+  text: string;
+  textBlocks: DecoratedBlock[];
 }

@@ -10,16 +10,21 @@ export const DropDown = ({
   onMouseEnteredDropDown,
   onMouseLeftDropDown,
 }: DropDownProps) => {
+  const optionChanged = React.useCallback(
+    (index: number) => {
+      if (onActiveOptionChanged) {
+        onActiveOptionChanged(index);
+      }
+    },
+    [onActiveOptionChanged],
+  );
 
-  const optionChanged = React.useCallback((index: number) => {
-    if (onActiveOptionChanged) {
-      onActiveOptionChanged(index);
-    }
-  }, [onActiveOptionChanged]);
-
-  const selectOption = React.useCallback((option: string) => {
-    onOptionSelected(option);
-  }, [onOptionSelected]);
+  const selectOption = React.useCallback(
+    (option: string) => {
+      onOptionSelected(option);
+    },
+    [onOptionSelected],
+  );
 
   return (
     <div
@@ -48,4 +53,4 @@ export const DropDown = ({
       </ul>
     </div>
   );
-}
+};

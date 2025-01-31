@@ -1,1 +1,1 @@
-export * from './SmartViewApp';
+export * from './SmartInputApp';

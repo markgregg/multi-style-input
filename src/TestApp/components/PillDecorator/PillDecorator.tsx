@@ -16,28 +16,38 @@ export const PillDecorator = ({
   const [top, setTop] = React.useState<number>(0);
   const [left, setLeft] = React.useState<number>(0);
 
-  const visibility = React.useMemo(() => mouseOver || (cursorPosition >= start && cursorPosition <= end) ? 'hidden' : 'visible',
-    [mouseOver, cursorPosition, start, end]
+  const visibility = React.useMemo(
+    () =>
+      mouseOver || (cursorPosition >= start && cursorPosition <= end)
+        ? 'hidden'
+        : 'visible',
+    [mouseOver, cursorPosition, start, end],
   );
 
-  const mouseEnter = React.useCallback((event: React.MouseEvent) => {
-    setmouseOver(true);
-    event.stopPropagation();
-  }, [mouseOver, setmouseOver]);
+  const mouseEnter = React.useCallback(
+    (event: React.MouseEvent) => {
+      setmouseOver(true);
+      event.stopPropagation();
+    },
+    [mouseOver, setmouseOver],
+  );
 
-  const documentMouseOver = React.useCallback((event: MouseEvent) => {
-    if (event.target !== textElement) {
-      setmouseOver(false)
-    }
-  }, [setmouseOver, textElement]);
+  const documentMouseOver = React.useCallback(
+    (event: MouseEvent) => {
+      if (event.target !== textElement) {
+        setmouseOver(false);
+      }
+    },
+    [setmouseOver, textElement],
+  );
 
   React.useEffect(() => {
     if (mouseOver) {
-      document.addEventListener("mouseover", documentMouseOver);
+      document.addEventListener('mouseover', documentMouseOver);
     }
     return () => {
       if (mouseOver) {
-        document.removeEventListener("mouseover", documentMouseOver);
+        document.removeEventListener('mouseover', documentMouseOver);
       }
     };
   }, [mouseOver]);
@@ -68,4 +78,4 @@ export const PillDecorator = ({
       {text}
     </div>
   );
-}
+};

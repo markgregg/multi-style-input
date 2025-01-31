@@ -1,4 +1,3 @@
-
 export interface DropDownOptionsState {
   options: string[];
   activeOption: string;
