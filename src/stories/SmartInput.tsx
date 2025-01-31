@@ -135,7 +135,7 @@ export const SmartInput: React.FC<SmartInputProps> = ({
         } else if (
           position >= pos &&
           position <= pos + token.trimEnd().length &&
-          token[position] !== ''
+          newText[position] !== ''
         ) {
           if (token.match(isinPatialRegEx)) {
             const matchedIsins = isinCodes.filter((code) =>
@@ -187,9 +187,6 @@ export const SmartInput: React.FC<SmartInputProps> = ({
   const handleTextChange = React.useCallback(
     (newText: string, position: number) => {
       applyChange(newText, position, true);
-      if (onChange) {
-        onChange(newText, position);
-      }
     },
     [applyChange, text, textBlocks],
   );
@@ -197,9 +194,6 @@ export const SmartInput: React.FC<SmartInputProps> = ({
   const handlePositionChange = React.useCallback(
     (position: number) => {
       applyChange(text, position);
-      if (onCaretPositionChange) {
-        onCaretPositionChange(position);
-      }
     },
     [applyChange, text, textBlocks],
   );
@@ -210,9 +204,9 @@ export const SmartInput: React.FC<SmartInputProps> = ({
         !b.customProps
           ? b
           : {
-              ...b,
-              customProps: { title: b.customProps, position: 'top' },
-            },
+            ...b,
+            customProps: { title: b.customProps, position: 'top' },
+          },
       ),
     [textBlocks],
   );
@@ -221,14 +215,8 @@ export const SmartInput: React.FC<SmartInputProps> = ({
     (id: string, option: string) => {
       const editBlock = textBlocks.find((b) => b.id === id);
       if (editBlock) {
-        const newText =
-          text.substring(0, editBlock.start) +
-          option +
-          text.substring(editBlock.start + editBlock.length);
+        const newText = `${text.substring(0, editBlock.start)}${option} ${text.substring(editBlock.start + editBlock.length)}`;
         applyChange(newText, editBlock.start, true);
-      }
-      if (onItemSelected) {
-        onItemSelected(id, option);
       }
     },
     [textBlocks, text, applyChange],
@@ -245,8 +233,6 @@ export const SmartInput: React.FC<SmartInputProps> = ({
           onCaretPositionChange={handlePositionChange}
           DropDownComponent={DropDown}
           onItemSelected={handleOptionSelection}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...props}
         />
       </div>
     </div>

@@ -24,7 +24,7 @@ export const getCursorPosition = (pre: HTMLPreElement | null) => {
         if (child === target) {
           return (
             totalLength +
-            range.endOffset
+            range.endOffset + ((child.textContent ?? '').trim() === '\n' ? 1 : 0)
           );
         }
         if (child && child.nodeName === '#text') {
@@ -54,7 +54,7 @@ export const setCursorPosition = (pre: HTMLPreElement, position: number) => {
         if (child && child.nodeName === '#text') {
           const textLength = (child.textContent ?? '').length;
           totalLength += textLength;
-          if (position <= totalLength) {
+          if (position < totalLength) {
             return child;
           }
         }
@@ -123,10 +123,14 @@ export const findEndOfChange = (
       return newText.length - count;
     }
     if (newText[newText.length - count] !== text[text.length - count]) {
-      return newText.length - count;
+      return newText.length - (count - 1);
     }
   }
 };
+
+export const getDomText = (element: HTMLElement): string => {
+  return [...element.childNodes.values().map((c) => c.textContent)].join('\n');
+}
 
 export const trimCR = (text: string) => {
   let cr = 0;

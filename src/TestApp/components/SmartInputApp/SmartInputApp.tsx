@@ -187,7 +187,7 @@ export const SmartInputApp = () => {
     (id: string, option: string) => {
       const editBlock = textBlocks.find((b) => b.id === id);
       if (editBlock) {
-        const newText = `${text.substring(0, editBlock.start)}${option} ${text.substring(editBlock.start + editBlock.length)}`;
+        const newText = `${text.substring(0, editBlock.start)}${option}${text.substring(editBlock.start + editBlock.length)}`;
         applyChange(newText, editBlock.start, true);
       }
     },
