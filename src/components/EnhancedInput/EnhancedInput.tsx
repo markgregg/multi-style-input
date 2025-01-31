@@ -11,7 +11,8 @@ export const EnhancedInput = React.memo(() => {
   const {
     customElements,
     dropDown,
-    update
+    caretPosition,
+    update,
   } = useBlockStore((state) => state);
   const {
     top,
@@ -60,7 +61,7 @@ export const EnhancedInput = React.memo(() => {
             text={element.text}
             start={element.start}
             end={element.end}
-            cursorPosition={0}
+            cursorPosition={caretPosition}
             textElement={element.textElement}
             customProps={element.customProps}
             style={element.decoratorStyle}

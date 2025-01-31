@@ -341,11 +341,11 @@ export const createDecoratedBlockStore = ({
 
       const customElements = newTextBlocks.filter((block) => 'Decorator' in block).map((block) => {
         const { id, start, length, Decorator, clasName, decoratorStyle, customProps } = block;
-        const elementText = text.substring(start, length);
         const textElement = document.getElementById(id);
         if (!textElement) {
           return null;
         }
+        const elementText = textElement.textContent ?? '';
         return {
           id,
           text: elementText,

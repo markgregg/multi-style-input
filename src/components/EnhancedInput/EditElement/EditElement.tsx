@@ -79,14 +79,35 @@ export const EditElement = React.memo(() => {
     if (selection) {
       const range = selection.getRangeAt(0);
       if (range.startContainer !== range.endContainer || range.startOffset !== range.endOffset) {
-        event.clipboardData.setData('text/html', selection.toString());
+        event.clipboardData.setData('text/plain', selection.toString());
+        event.preventDefault();
         return;
       }
     }
     if (preRef.current) {
-      event.clipboardData.setData('text/html', preRef.current.innerText);
+      event.clipboardData.setData('text/plain', preRef.current.innerText);
+      event.preventDefault();
     }
   }, []);
+
+  const handleCut = React.useCallback((event: React.ClipboardEvent) => {
+    const selection = document.getSelection();
+    if (selection) {
+      const range = selection.getRangeAt(0);
+      if (range.startContainer !== range.endContainer || range.startOffset !== range.endOffset) {
+        const cutText = selection.toString()
+        event.clipboardData.setData('text/plain', cutText);
+        const newText = text.replace(cutText, '');
+        updateText(newText);
+        if (onChange) {
+          const position = findChangePosition(text, newText);
+          onChange(newText, position);
+        }
+        event.preventDefault();
+        return;
+      }
+    }
+  }, [text, onChange]);
 
   const handleKeyUp = React.useCallback((event: React.KeyboardEvent<HTMLPreElement>) => {
     if (event.key === KeyBoardkeys.ArrowLeft ||
@@ -177,6 +198,7 @@ export const EditElement = React.memo(() => {
       onScroll={handleScroll}
       onPaste={handlePaste}
       onCopy={handleCopy}
+      onCut={handleCut}
       onKeyUp={handleKeyUp}
       onKeyDown={handleKeyDown}
       onFocus={onFocus}

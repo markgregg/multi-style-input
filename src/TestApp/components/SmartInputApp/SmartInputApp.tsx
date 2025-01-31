@@ -243,11 +243,11 @@ export const SmartInputApp = () => {
 
   const handleTextChange = React.useCallback((newText: string, position: number) => {
     applyChange(newText, position, true);
-  }, [applyChange]);
+  }, [applyChange, text, textBlocks]);
 
   const handlePositionChange = React.useCallback((position: number) => {
     applyChange(text, position);
-  }, [applyChange, text]);
+  }, [applyChange, text, textBlocks]);
 
   const updatedBlocks = React.useMemo(
     () =>
