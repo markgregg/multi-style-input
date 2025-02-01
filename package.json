@@ -1,7 +1,7 @@
 {
   "homepage": "https://github.com/markgregg/smart-input",
   "name": "smart-input",
-  "version": "0.9.7",
+  "version": "0.0.1",
   "description": "Powerfulview input component for react",
   "type": "module",
   "keywords": [
