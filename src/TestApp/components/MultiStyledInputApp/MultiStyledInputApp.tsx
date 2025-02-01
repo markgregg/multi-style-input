@@ -1,7 +1,9 @@
 import React from 'react';
-import { SmartInput as SmartInputComp } from '@/components';
-import { DropDown } from '@/TestApp/components/DropDown';
+import { MultiStyledInput } from '@/components';
 import { DecoratedBlock } from '@/types';
+import { PillDecorator } from '../PillDecorator';
+import TitleDecorator from '../TitleDecorator/TitleDecorator';
+import { DropDown } from '../DropDown';
 import {
   isinCodes,
   isinPatialRegEx,
@@ -11,40 +13,10 @@ import {
   lastIndexOf,
   tickerRegEx,
   tickers,
-} from './smartInputFunctions';
-import { PillDecorator } from '@/TestApp/components/PillDecorator';
-import TitleDecorator from '@/TestApp/components/TitleDecorator/TitleDecorator';
+} from '@/stories/multiStyledInputFunctions';
 import s from './style.module.less';
 
-export interface SmartInputProps {
-  /* Example width */
-  exampleWidth?: number;
-  /* Example height */
-  exampleHeight?: number;
-  tabIndex?: number;
-  onItemSelected?: (id: string, option: string) => void;
-  onChange?: (text: string, position: number) => void;
-  onCaretPositionChange?: (position: number) => void;
-  onFocus?: (event: React.FocusEvent) => void;
-  onBlur?: (event: React.FocusEvent) => void;
-  onClick?: (event: React.MouseEvent) => void;
-  onDoubleClick?: (event: React.MouseEvent) => void;
-  onMouseDown?: (event: React.MouseEvent) => void;
-  onMouseUp?: (event: React.MouseEvent) => void;
-  onMouseEnter?: (event: React.MouseEvent) => void;
-  onMouseLeave?: (event: React.MouseEvent) => void;
-  onMouseOver?: (event: React.MouseEvent) => void;
-  onKeyDown?: (event: React.KeyboardEvent) => void;
-  onKeyUp?: (event: React.KeyboardEvent) => void;
-}
-
-/** Primary UI component for user interaction */
-export const SmartInput: React.FC<SmartInputProps> = ({
-  onChange,
-  onCaretPositionChange,
-  onItemSelected,
-  ...props
-}: SmartInputProps) => {
+export const MultiStyledInputApp = () => {
   const [text, setText] = React.useState<string>('');
   const [textBlocks, setTextBlocks] = React.useState<DecoratedBlock[]>([]);
 
@@ -187,9 +159,6 @@ export const SmartInput: React.FC<SmartInputProps> = ({
   const handleTextChange = React.useCallback(
     (newText: string, position: number) => {
       applyChange(newText, position, true);
-      if (onChange) {
-        onChange(newText, position);
-      }
     },
     [applyChange, text, textBlocks],
   );
@@ -197,9 +166,6 @@ export const SmartInput: React.FC<SmartInputProps> = ({
   const handlePositionChange = React.useCallback(
     (position: number) => {
       applyChange(text, position);
-      if (onCaretPositionChange) {
-        onCaretPositionChange(position);
-      }
     },
     [applyChange, text, textBlocks],
   );
@@ -210,9 +176,9 @@ export const SmartInput: React.FC<SmartInputProps> = ({
         !b.customProps
           ? b
           : {
-            ...b,
-            customProps: { title: b.customProps, position: 'top' },
-          },
+              ...b,
+              customProps: { title: b.customProps, position: 'top' },
+            },
       ),
     [textBlocks],
   );
@@ -221,29 +187,24 @@ export const SmartInput: React.FC<SmartInputProps> = ({
     (id: string, option: string) => {
       const editBlock = textBlocks.find((b) => b.id === id);
       if (editBlock) {
-        const newText = `${text.substring(0, editBlock.start)}${option} ${text.substring(editBlock.start + editBlock.length)}`;
+        const newText = `${text.substring(0, editBlock.start)}${option}${text.substring(editBlock.start + editBlock.length)}`;
         applyChange(newText, editBlock.start, true);
-      }
-      if (onItemSelected) {
-        onItemSelected(id, option);
       }
     },
     [textBlocks, text, applyChange],
   );
 
   return (
-    <div className={s.smartFilterPage}>
+    <div className={s.smartInputPage}>
       <h4>Multi Styled Input</h4>
-      <div className={s.filterBar}>
-        <SmartInputComp
+      <div className={s.smartInput}>
+        <MultiStyledInput
           text={text}
           textBlocks={updatedBlocks}
           onChange={handleTextChange}
           onCaretPositionChange={handlePositionChange}
           DropDownComponent={DropDown}
           onItemSelected={handleOptionSelection}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...props}
         />
       </div>
     </div>

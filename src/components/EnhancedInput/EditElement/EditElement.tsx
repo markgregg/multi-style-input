@@ -13,6 +13,8 @@ import { KeyBoardkeys } from '@/util/constants';
 export const EditElement = React.memo(() => {
   const preRef = React.useRef<HTMLPreElement | null>(null);
   const {
+    className,
+    style,
     onItemSelected,
     onChange,
     onCaretPositionChange,
@@ -207,7 +209,8 @@ export const EditElement = React.memo(() => {
   return (
     <pre
       id="si-edit-element"
-      className={s.editElement}
+      className={[s.editElement, className].join(' ')}
+      style={style}
       contentEditable="true"
       ref={setReference}
       autoCapitalize="none"

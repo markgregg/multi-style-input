@@ -1,9 +1,11 @@
 import { StoreApi, UseBoundStore, create } from 'zustand';
 import { ConfigState } from '@/types/State';
-import { SmartInputProps } from '@/types';
+import { MultiStyledInputProps } from '@/types';
 
 export const createConfigStore = ({
   tabIndex,
+  className,
+  style,
   DropDownComponent,
   onItemSelected,
   onChange,
@@ -19,9 +21,11 @@ export const createConfigStore = ({
   onMouseOver,
   onKeyDown,
   onKeyUp,
-}: SmartInputProps): UseBoundStore<StoreApi<ConfigState>> =>
+}: MultiStyledInputProps): UseBoundStore<StoreApi<ConfigState>> =>
   create<ConfigState>(() => ({
     tabIndex,
+    className,
+    style,
     DropDownComponent,
     onItemSelected,
     onChange,

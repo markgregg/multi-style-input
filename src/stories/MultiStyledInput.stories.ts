@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { SmartInput } from './SmartInput';
+import { MultiStyledInput } from './MultiStyledInput';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Examples/SmartInput',
-  component: SmartInput,
+  title: 'Examples/MultiStyledInput',
+  component: MultiStyledInput,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
@@ -21,6 +21,12 @@ const meta = {
     exampleHeight: {
       control: 'number',
       description: 'The height of the example',
+    },
+    className: {
+      description: 'class name for custom class',
+    },
+    style: {
+      description: 'custom styling',
     },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
@@ -40,7 +46,7 @@ const meta = {
     onKeyDown: fn(),
     onKeyUp: fn(),
   },
-} satisfies Meta<typeof SmartInput>;
+} satisfies Meta<typeof MultiStyledInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -50,5 +56,10 @@ export const Primary: Story = {
   args: {
     exampleHeight: 600,
     exampleWidth: 1000,
+
+    style: {
+      backgroundColor: 'blue',
+      borderRadius: '30px',
+    },
   },
 };

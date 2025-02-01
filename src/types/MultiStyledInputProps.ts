@@ -3,10 +3,12 @@ import { DecoratedBlock } from './decoratedBlock';
 import { DropDownProps } from './dropDownProps';
 import { UIProperties } from './uiProperties';
 
-export interface SmartInputProps extends UIProperties, BlockEventProps {
+export interface MultiStyledInputProps extends UIProperties, BlockEventProps {
   text: string;
   textBlocks: DecoratedBlock[];
   tabIndex?: number;
+  className?: string;
+  style?: React.CSSProperties;
   DropDownComponent?: React.ComponentType<DropDownProps>;
   onItemSelected?: (id: string, option: string) => void;
   onChange?: (text: string, position: number) => void;

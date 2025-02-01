@@ -10,7 +10,11 @@ import {
 import { DropDown } from './DropDown';
 
 export const EnhancedInput = React.memo(() => {
-  const { tabIndex } = useConfig((state) => state);
+  const {
+    tabIndex,
+    className,
+    style,
+  } = useConfig((state) => state);
   const { customElements, dropDown, caretPosition, update } = useBlockStore(
     (state) => state,
   );
@@ -33,7 +37,8 @@ export const EnhancedInput = React.memo(() => {
     <div
       tabIndex={tabIndex ?? -1}
       id="si-enhanced-Input"
-      className={s.enhancedInput}
+      className={[s.enhancedInput, className].join(' ')}
+      style={style}
     >
       <EditElement />
       {visibleElements.map((element) => (

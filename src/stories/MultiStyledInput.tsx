@@ -1,9 +1,7 @@
 import React from 'react';
-import { SmartInput } from '@/components';
+import { MultiStyledInput as MultiStyledInputComp } from '@/components';
+import { DropDown } from '@/TestApp/components/DropDown';
 import { DecoratedBlock } from '@/types';
-import { PillDecorator } from '../PillDecorator';
-import TitleDecorator from '../TitleDecorator/TitleDecorator';
-import { DropDown } from '../DropDown';
 import {
   isinCodes,
   isinPatialRegEx,
@@ -13,10 +11,44 @@ import {
   lastIndexOf,
   tickerRegEx,
   tickers,
-} from '@/stories/smartInputFunctions';
+} from './multiStyledInputFunctions';
+import { PillDecorator } from '@/TestApp/components/PillDecorator';
+import TitleDecorator from '@/TestApp/components/TitleDecorator/TitleDecorator';
 import s from './style.module.less';
 
-export const SmartInputApp = () => {
+export interface MultiStyledInputProps {
+  /* Example width */
+  exampleWidth?: number;
+  /* Example height */
+  exampleHeight?: number;
+  tabIndex?: number;
+  className?: string;
+  style?: React.CSSProperties;
+  onItemSelected?: (id: string, option: string) => void;
+  onChange?: (text: string, position: number) => void;
+  onCaretPositionChange?: (position: number) => void;
+  onFocus?: (event: React.FocusEvent) => void;
+  onBlur?: (event: React.FocusEvent) => void;
+  onClick?: (event: React.MouseEvent) => void;
+  onDoubleClick?: (event: React.MouseEvent) => void;
+  onMouseDown?: (event: React.MouseEvent) => void;
+  onMouseUp?: (event: React.MouseEvent) => void;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
+  onMouseOver?: (event: React.MouseEvent) => void;
+  onKeyDown?: (event: React.KeyboardEvent) => void;
+  onKeyUp?: (event: React.KeyboardEvent) => void;
+}
+
+/** Primary UI component for user interaction */
+export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
+  className,
+  style,
+  onChange,
+  onCaretPositionChange,
+  onItemSelected,
+  ...props
+}: MultiStyledInputProps) => {
   const [text, setText] = React.useState<string>('');
   const [textBlocks, setTextBlocks] = React.useState<DecoratedBlock[]>([]);
 
@@ -159,6 +191,9 @@ export const SmartInputApp = () => {
   const handleTextChange = React.useCallback(
     (newText: string, position: number) => {
       applyChange(newText, position, true);
+      if (onChange) {
+        onChange(newText, position);
+      }
     },
     [applyChange, text, textBlocks],
   );
@@ -166,6 +201,9 @@ export const SmartInputApp = () => {
   const handlePositionChange = React.useCallback(
     (position: number) => {
       applyChange(text, position);
+      if (onCaretPositionChange) {
+        onCaretPositionChange(position);
+      }
     },
     [applyChange, text, textBlocks],
   );
@@ -187,8 +225,11 @@ export const SmartInputApp = () => {
     (id: string, option: string) => {
       const editBlock = textBlocks.find((b) => b.id === id);
       if (editBlock) {
-        const newText = `${text.substring(0, editBlock.start)}${option}${text.substring(editBlock.start + editBlock.length)}`;
+        const newText = `${text.substring(0, editBlock.start)}${option} ${text.substring(editBlock.start + editBlock.length)}`;
         applyChange(newText, editBlock.start, true);
+      }
+      if (onItemSelected) {
+        onItemSelected(id, option);
       }
     },
     [textBlocks, text, applyChange],
@@ -198,13 +239,17 @@ export const SmartInputApp = () => {
     <div className={s.smartFilterPage}>
       <h4>Multi Styled Input</h4>
       <div className={s.filterBar}>
-        <SmartInput
+        <MultiStyledInputComp
+          className={className}
+          style={style}
           text={text}
           textBlocks={updatedBlocks}
           onChange={handleTextChange}
           onCaretPositionChange={handlePositionChange}
           DropDownComponent={DropDown}
           onItemSelected={handleOptionSelection}
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          {...props}
         />
       </div>
     </div>
