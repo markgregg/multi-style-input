@@ -1,8 +1,8 @@
 import { default as React } from '../../node_modules/react';
-import { MultiStyledInputProps } from '../../../../../../src/types';
+import { MultiStyleInputProps } from '../../../../../../src/types';
 
 export interface ProviderProps {
-    props: MultiStyledInputProps;
+    props: MultiStyleInputProps;
     children: JSX.Element | JSX.Element[];
 }
 export declare const StateProvider: React.MemoExoticComponent<({ props, children }: ProviderProps) => import("react/jsx-runtime").JSX.Element>;

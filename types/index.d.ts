@@ -1,5 +1,5 @@
 export * from './uiProperties';
-export * from './MultiStyledInputProps';
+export * from './multiStyleInputProps';
 export * from './decoratedBlock';
 export * from './dropDownProps';
 export * from './dropDownOptions';

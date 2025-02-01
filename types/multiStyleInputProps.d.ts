@@ -3,7 +3,7 @@ import { DecoratedBlock } from './decoratedBlock';
 import { DropDownProps } from './dropDownProps';
 import { UIProperties } from './uiProperties';
 
-export interface MultiStyledInputProps extends UIProperties, BlockEventProps {
+export interface MultiStyleInputProps extends UIProperties, BlockEventProps {
     text: string;
     textBlocks: DecoratedBlock[];
     tabIndex?: number;
