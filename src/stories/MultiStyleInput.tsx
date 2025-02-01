@@ -1,5 +1,5 @@
 import React from 'react';
-import { MultiStyledInput as MultiStyledInputComp } from '@/components';
+import { MultiStyleInput as MultiStyleInputComp } from '@/components';
 import { DropDown } from '@/TestApp/components/DropDown';
 import { DecoratedBlock } from '@/types';
 import {
@@ -11,12 +11,12 @@ import {
   lastIndexOf,
   tickerRegEx,
   tickers,
-} from './multiStyledInputFunctions';
+} from './multiStyleInputFunctions';
 import { PillDecorator } from '@/TestApp/components/PillDecorator';
 import TitleDecorator from '@/TestApp/components/TitleDecorator/TitleDecorator';
 import s from './style.module.less';
 
-export interface MultiStyledInputProps {
+export interface MultiStyleInputProps {
   /* Example width */
   exampleWidth?: number;
   /* Example height */
@@ -41,14 +41,14 @@ export interface MultiStyledInputProps {
 }
 
 /** Primary UI component for user interaction */
-export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
+export const MultiStyleInput: React.FC<MultiStyleInputProps> = ({
   className,
   style,
   onChange,
   onCaretPositionChange,
   onItemSelected,
   ...props
-}: MultiStyledInputProps) => {
+}: MultiStyleInputProps) => {
   const [text, setText] = React.useState<string>('');
   const [textBlocks, setTextBlocks] = React.useState<DecoratedBlock[]>([]);
 
@@ -60,7 +60,7 @@ export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
           : (lastIndexOf(newText, ' \n\r\t', position) ?? 0);
       const tokens = newText.substring(start).split(/ |\n|\r|\t/);
       const tempBlocks = textBlocks.filter((b) => b.start + b.length < start);
-      const style = 'font-style: italic;font-weight: bold;';
+      const bStyle = 'font-style: italic;font-weight: bold;';
       let pos = start;
       tokens.forEach((token) => {
         if (token.match(isinRegEx)) {
@@ -70,7 +70,7 @@ export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
                 id: `isin${pos}`,
                 start: pos,
                 length: token.length,
-                style,
+                style: bStyle,
                 Decorator: PillDecorator,
                 decoratorStyle: {
                   backgroundColor: 'rgb(68, 68, 68)',
@@ -82,7 +82,7 @@ export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
                 id: `isin${pos}`,
                 start: pos,
                 length: token.length,
-                style,
+                style: bStyle,
                 Decorator: PillDecorator,
                 decoratorStyle: {
                   backgroundColor: 'rgb(154, 61, 55)',
@@ -97,7 +97,7 @@ export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
               id: `ticker${pos}`,
               start: pos,
               length: token.length,
-              style,
+              style: bStyle,
               Decorator: PillDecorator,
               decoratorStyle: {
                 backgroundColor: 'rgb(68, 68, 68)',
@@ -111,7 +111,7 @@ export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
               id: `vol${pos}`,
               start: pos,
               length: token.length,
-              style,
+              style: bStyle,
               customProps: 'Size',
               Decorator: TitleDecorator,
               decoratorStyle: {
@@ -127,7 +127,7 @@ export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
               id: `prc${pos}`,
               start: pos,
               length: token.length,
-              style,
+              style: bStyle,
               Decorator: PillDecorator,
               decoratorStyle: {
                 backgroundColor: 'rgb(68, 68, 68)',
@@ -214,9 +214,9 @@ export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
         !b.customProps
           ? b
           : {
-            ...b,
-            customProps: { title: b.customProps, position: 'top' },
-          },
+              ...b,
+              customProps: { title: b.customProps, position: 'top' },
+            },
       ),
     [textBlocks],
   );
@@ -237,9 +237,9 @@ export const MultiStyledInput: React.FC<MultiStyledInputProps> = ({
 
   return (
     <div className={s.smartFilterPage}>
-      <h4>Multi Styled Input</h4>
+      <h4>Multi Style Input</h4>
       <div className={s.filterBar}>
-        <MultiStyledInputComp
+        <MultiStyleInputComp
           className={className}
           style={style}
           text={text}

@@ -1,7 +1,7 @@
 {
-  "homepage": "https://github.com/markgregg/multi-styled-input",
-  "name": "multi-styled-input",
-  "version": "0.0.4",
+  "homepage": "https://github.com/markgregg/multi-style-input",
+  "name": "multi-style-input",
+  "version": "0.0.5",
   "description": "Powerfulview input component for react",
   "type": "module",
   "keywords": [
@@ -11,9 +11,9 @@
   ],
   "author": "Mark Gregg <gregg.mark@gmail.com> (https://github.com/markgregg)",
   "license": "MIT",
-  "main": "dist/multi-styled-input.min.js",
-  "main::production": "dist/multi-styled-input.min.js",
-  "main::development": "dist/multi-styled-input.js",
+  "main": "dist/multi-style-input.min.js",
+  "main::production": "dist/multi-style-input.min.js",
+  "main::development": "dist/multi-style-input.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"

@@ -1,14 +1,14 @@
 import React from 'react';
 import { createConfigStore } from './configStore';
 import { StateContext } from '@/state/state';
-import { MultiStyledInputProps } from '@/types';
+import { MultiStyleInputProps } from '@/types';
 import { createDecoratedBlockStore } from './decoratedBlockStore';
 import { createViewPortStore } from './viewPortStore';
 import { createManagedStore } from './managedState';
 import { createDropDownOptionsStore } from './dropDownOptions';
 
 export interface ProviderProps {
-  props: MultiStyledInputProps;
+  props: MultiStyleInputProps;
   children: JSX.Element | JSX.Element[];
 }
 

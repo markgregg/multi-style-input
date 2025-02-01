@@ -1,6 +1,6 @@
 import { StoreApi, UseBoundStore, create } from 'zustand';
 import { ConfigState } from '@/types/State';
-import { MultiStyledInputProps } from '@/types';
+import { MultiStyleInputProps } from '@/types';
 
 export const createConfigStore = ({
   tabIndex,
@@ -21,7 +21,7 @@ export const createConfigStore = ({
   onMouseOver,
   onKeyDown,
   onKeyUp,
-}: MultiStyledInputProps): UseBoundStore<StoreApi<ConfigState>> =>
+}: MultiStyleInputProps): UseBoundStore<StoreApi<ConfigState>> =>
   create<ConfigState>(() => ({
     tabIndex,
     className,

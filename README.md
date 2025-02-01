@@ -1,6 +1,6 @@
-# Multi Styled Input
+# Multi Style Input
 
-Multi Styled Input is a customizable and intelligent input component for web applications. It provides advanced features such as validation, formatting, and autocomplete to enhance user experience.
+Multi Style Input is a customizable and intelligent input component for web applications. It provides advanced features such as validation, formatting, and autocomplete to enhance user experience.
 
 ## Features
 
@@ -11,23 +11,23 @@ Multi Styled Input is a customizable and intelligent input component for web app
 
 ## Installation
 
-To install Multi Styled Input, use npm:
+To install Multi Style Input, use npm:
 
 ```bash
-npm install multi-styled-input
+npm install multi-style-input
 ```
 
 ## Usage
 
-Here is a basic example of how to use Multi Styled Input in your project:
+Here is a basic example of how to use Multi Style Input in your project:
 
 ```javascript
-import SmartInput from 'multi-styled-input';
+import SmartInput from 'multi-style-input';
 
 function App() {
     return (
         <div>
-            <h1>Multi Styled Input Example</h1>
+            <h1>Multi Style Input Example</h1>
             <SmartInput type="email" placeholder="Enter your email" />
         </div>
     );
@@ -38,7 +38,7 @@ export default App;
 
 ## Example
 
-For an example implementation, please visit the [Multi Styled Input Example](https://markgregg.github.io/multi-styled-input/?path=/story/examples-smartinput--primary).
+For an example implementation, please visit the [Multi Style Input Example](https://markgregg.github.io/multi-style-input/?path=/story/examples-smartinput--primary).
 
 ## License
 

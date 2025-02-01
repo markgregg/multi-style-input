@@ -1,9 +1,9 @@
 import React from 'react';
 import { EnhancedInput } from '../EnhancedInput';
 import { StateProvider } from '../../state/StateProvider';
-import { MultiStyledInputProps } from '@/types';
+import { MultiStyleInputProps } from '@/types';
 
-export const MultiStyledInput = React.memo((props: MultiStyledInputProps) => (
+export const MultiStyleInput = React.memo((props: MultiStyleInputProps) => (
   <StateProvider props={props}>
     <EnhancedInput />
   </StateProvider>

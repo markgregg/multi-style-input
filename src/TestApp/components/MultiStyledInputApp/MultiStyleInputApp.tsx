@@ -1,5 +1,5 @@
 import React from 'react';
-import { MultiStyledInput } from '@/components';
+import { MultiStyleInput } from '@/components';
 import { DecoratedBlock } from '@/types';
 import { PillDecorator } from '../PillDecorator';
 import TitleDecorator from '../TitleDecorator/TitleDecorator';
@@ -13,10 +13,10 @@ import {
   lastIndexOf,
   tickerRegEx,
   tickers,
-} from '@/stories/multiStyledInputFunctions';
+} from '@/stories/multiStyleInputFunctions';
 import s from './style.module.less';
 
-export const MultiStyledInputApp = () => {
+export const MultiStyleInputApp = () => {
   const [text, setText] = React.useState<string>('');
   const [textBlocks, setTextBlocks] = React.useState<DecoratedBlock[]>([]);
 
@@ -196,9 +196,9 @@ export const MultiStyledInputApp = () => {
 
   return (
     <div className={s.smartInputPage}>
-      <h4>Multi Styled Input</h4>
+      <h4>Multi Style Input</h4>
       <div className={s.smartInput}>
-        <MultiStyledInput
+        <MultiStyleInput
           text={text}
           textBlocks={updatedBlocks}
           onChange={handleTextChange}

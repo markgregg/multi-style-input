@@ -10,11 +10,7 @@ import {
 import { DropDown } from './DropDown';
 
 export const EnhancedInput = React.memo(() => {
-  const {
-    tabIndex,
-    className,
-    style,
-  } = useConfig((state) => state);
+  const { tabIndex, className, style } = useConfig((state) => state);
   const { customElements, dropDown, caretPosition, update } = useBlockStore(
     (state) => state,
   );
@@ -40,35 +36,37 @@ export const EnhancedInput = React.memo(() => {
       className={[s.enhancedInput, className].join(' ')}
       style={style}
     >
-      <EditElement />
-      {visibleElements.map((element) => (
-        <div
-          key={element.id}
-          style={{
-            position: 'absolute',
-            lineHeight: 'normal',
-            left: element.left - left,
-            top: element.top - top,
-            width: element.width,
-            height:
-              element.top - top + element.height < height
-                ? element.height
-                : height - (element.top - top),
-          }}
-        >
-          <element.Decorator
-            id={element.id}
-            text={element.text}
-            start={element.start}
-            end={element.end}
-            cursorPosition={caretPosition}
-            textElement={element.textElement}
-            customProps={element.customProps}
-            style={element.decoratorStyle}
-          />
-        </div>
-      ))}
-      {dropDown && <DropDown />}
+      <div className={s.editArea}>
+        <EditElement />
+        {visibleElements.map((element) => (
+          <div
+            key={element.id}
+            style={{
+              position: 'absolute',
+              lineHeight: 'normal',
+              left: element.left - left,
+              top: element.top - top,
+              width: element.width,
+              height:
+                element.top - top + element.height < height
+                  ? element.height
+                  : height - (element.top - top),
+            }}
+          >
+            <element.Decorator
+              id={element.id}
+              text={element.text}
+              start={element.start}
+              end={element.end}
+              cursorPosition={caretPosition}
+              textElement={element.textElement}
+              customProps={element.customProps}
+              style={element.decoratorStyle}
+            />
+          </div>
+        ))}
+        {dropDown && <DropDown />}
+      </div>
     </div>
   );
 });

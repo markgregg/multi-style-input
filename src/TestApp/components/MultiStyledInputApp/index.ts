@@ -1,1 +1,1 @@
-export * from './MultiStyledInputApp';
+export * from './MultiStyleInputApp';
