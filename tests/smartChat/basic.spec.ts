@@ -1,20 +1,44 @@
 import { expect } from "@playwright/test";
-import { Given, Scenario, Then } from "../common/ghkerkin";
+import { Given, Scenario, When, Then } from "../common/ghkerkin";
 
 Scenario(
-  `All icons are shown when enabled`,
+  `Smart input is shown`,
   async ({
     smartInputPage: {
-      filterBar,
+      mainComponent,
       use,
     },
   }) => {
-    await Given('the SmartFilter test page is shown', async () => {
+    await Given('the smart input component is shwon', async () => {
       await use('');
     });
 
-    await Then('the Smart Filter mathces valid screenshot', async () => {
-      await expect(filterBar).toHaveScreenshot(`icons-shown.png`);
+    await Then('the control appears as expected', async () => {
+      await expect(mainComponent).toHaveScreenshot(`smart-input-is-shown.png`);
     });
   }
 );
+
+Scenario(
+  `Smart input is shown with focus`,
+  async ({
+    smartInputPage: {
+      mainComponent,
+      editComponent,
+      use,
+    },
+  }) => {
+    await Given('the smart input component is shown', async () => {
+      await use('');
+    });
+
+    await When('the smart input component is in focus', async () => {
+      editComponent.focus();
+    });
+
+    await Then('a border will be sbown', async () => {
+      await expect(mainComponent).toHaveScreenshot(`smart-input-has-focus-border.png`);
+    });
+  }
+);
+

@@ -176,9 +176,9 @@ export const SmartInputApp = () => {
         !b.customProps
           ? b
           : {
-            ...b,
-            customProps: { title: b.customProps, position: 'top' },
-          },
+              ...b,
+              customProps: { title: b.customProps, position: 'top' },
+            },
       ),
     [textBlocks],
   );

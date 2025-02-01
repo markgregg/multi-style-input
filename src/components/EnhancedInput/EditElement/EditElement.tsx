@@ -7,11 +7,7 @@ import {
 } from '@/state/useState';
 import s from './style.module.less';
 import { useSizeWatcher } from '@/hooks/useSizeWatcher';
-import {
-  findChangePosition,
-  getCursorPosition,
-  trimCR,
-} from './functions';
+import { findChangePosition, getCursorPosition, trimCR } from './functions';
 import { KeyBoardkeys } from '@/util/constants';
 
 export const EditElement = React.memo(() => {
@@ -96,7 +92,10 @@ export const EditElement = React.memo(() => {
       }
     }
     if (preRef.current) {
-      event.clipboardData.setData('text/plain', preRef.current.textContent ?? '');
+      event.clipboardData.setData(
+        'text/plain',
+        preRef.current.textContent ?? '',
+      );
       event.preventDefault();
     }
   }, []);

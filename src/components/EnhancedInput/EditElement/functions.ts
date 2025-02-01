@@ -24,7 +24,8 @@ export const getCursorPosition = (pre: HTMLPreElement | null) => {
         if (child === target) {
           return (
             totalLength +
-            range.endOffset + ((child.textContent ?? '').trim() === '\n' ? 1 : 0)
+            range.endOffset +
+            ((child.textContent ?? '').trim() === '\n' ? 1 : 0)
           );
         }
         if (child && child.nodeName === '#text') {
@@ -120,7 +121,7 @@ export const findEndOfChange = (
       return null;
     }
     if (text.length === count) {
-      return newText.length - count;
+      return newText.length - (count - 1);
     }
     if (newText[newText.length - count] !== text[text.length - count]) {
       return newText.length - (count - 1);
@@ -128,16 +129,17 @@ export const findEndOfChange = (
   }
 };
 
-export const getDomText = (element: HTMLElement): string => {
-  return [...element.childNodes.values().map((c) => c.textContent)].join('\n');
-}
+export const getDomText = (element: HTMLElement): string =>
+  [...element.childNodes.values().map((c) => c.textContent)].join('\n');
 
 export const trimCR = (text: string) => {
   let cr = 0;
-  for (let index = text.length - 1; index > 0 && text[index] === '\n'; index -= 1) {
+  for (
+    let index = text.length - 1;
+    index > 0 && text[index] === '\n';
+    index -= 1
+  ) {
     cr += 1;
   }
-  return (cr > 2)
-    ? text.substring(0, text.length - (cr - 2))
-    : text;
-}
+  return cr > 2 ? text.substring(0, text.length - (cr - 2)) : text;
+};

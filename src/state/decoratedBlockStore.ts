@@ -84,12 +84,12 @@ export const createDecoratedBlockStore = ({
           const blockElements: HtmlTextElement[] = [
             ...(start > lastPos
               ? [
-                createHtmlText(
-                  lastPos,
-                  lastPos + (start - lastPos - 1),
-                  line.substring(lastPos - position, start - position),
-                ),
-              ]
+                  createHtmlText(
+                    lastPos,
+                    lastPos + (start - lastPos - 1),
+                    line.substring(lastPos - position, start - position),
+                  ),
+                ]
               : []),
             createHtmlStyledText(
               start,
@@ -108,17 +108,11 @@ export const createDecoratedBlockStore = ({
           createHtmlText(
             lastPos,
             lastPos + (line.length - (lastPos - position)),
-            line.substring(lastPos - position) + '\n',
+            `${line.substring(lastPos - position)}\n`,
           ),
         );
       } else {
-        lineElements.push(
-          createHtmlText(
-            lastPos,
-            lastPos,
-            '\n',
-          ),
-        );
+        lineElements.push(createHtmlText(lastPos, lastPos, '\n'));
       }
       position += line.length + 1;
       return lineElements;
@@ -440,13 +434,13 @@ export const createDecoratedBlockStore = ({
           customElements,
           dropDown: dropDownId
             ? ({
-              id: dropDownId,
-              dropDown,
-              ...getElementPosition(
-                document.getElementById(dropDownId) as HTMLElement,
-                true,
-              ),
-            } as DropDownListElement)
+                id: dropDownId,
+                dropDown,
+                ...getElementPosition(
+                  document.getElementById(dropDownId) as HTMLElement,
+                  true,
+                ),
+              } as DropDownListElement)
             : null,
         };
       }),
