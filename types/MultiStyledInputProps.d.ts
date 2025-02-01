@@ -7,6 +7,8 @@ export interface MultiStyledInputProps extends UIProperties, BlockEventProps {
     text: string;
     textBlocks: DecoratedBlock[];
     tabIndex?: number;
+    className?: string;
+    style?: React.CSSProperties;
     DropDownComponent?: React.ComponentType<DropDownProps>;
     onItemSelected?: (id: string, option: string) => void;
     onChange?: (text: string, position: number) => void;

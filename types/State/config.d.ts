@@ -4,6 +4,8 @@ import { UIProperties } from '../uiProperties';
 
 export interface ConfigState extends UIProperties, BlockEventProps {
     tabIndex?: number;
+    className?: string;
+    style?: React.CSSProperties;
     DropDownComponent?: React.ComponentType<DropDownProps>;
     onItemSelected?: (id: string, option: string) => void;
     onChange?: (text: string, position: number) => void;
