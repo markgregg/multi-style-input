@@ -22,6 +22,9 @@ const meta = {
       control: 'number',
       description: 'The height of the example',
     },
+    size: {
+      options: ['compact', 'normal', 'large'],
+    },
     className: {
       description: 'class name for custom class',
     },
@@ -56,10 +59,5 @@ export const Primary: Story = {
   args: {
     exampleHeight: 600,
     exampleWidth: 1000,
-
-    style: {
-      backgroundColor: 'blue',
-      borderRadius: '30px',
-    },
   },
 };

@@ -2,8 +2,6 @@
 
 .editElement {
   font-family: @font-family;
-  line-height: @line-height;
-  font-size: @font-size;
   position: relative;
   width: 100%;
   height: 100%;
@@ -12,4 +10,19 @@
   outline: none;
   z-index: 1;
   overflow: auto;
+}
+
+.font-compact {
+  line-height: @line-height-compact;
+  font-size: @font-size-compact;
+}
+
+.font-normal {
+  line-height: @line-height;
+  font-size: @font-size;
+}
+
+.font-large {
+  line-height: @line-height-large;
+  font-size: @font-size-large;
 }

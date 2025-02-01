@@ -7,6 +7,7 @@ export default function TitleDecorator({
   textElement,
   clasName,
   style,
+  size,
 }: ComponentProps) {
   const divRef = React.useRef<HTMLDivElement | null>(null);
   const [visibility, setVisibility] = React.useState<'hidden' | 'visible'>(
@@ -45,7 +46,7 @@ export default function TitleDecorator({
   return (
     <div
       ref={divRef}
-      className={[s.titleDecorator, clasName ?? ''].join(' ')}
+      className={[s.pillDecorator, s[`font-${size}`], clasName ?? ''].join(' ')}
       style={{
         visibility,
         top:

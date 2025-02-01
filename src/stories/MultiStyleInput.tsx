@@ -1,7 +1,7 @@
 import React from 'react';
 import { MultiStyleInput as MultiStyleInputComp } from '@/components';
 import { DropDown } from '@/TestApp/components/DropDown';
-import { DecoratedBlock } from '@/types';
+import { DecoratedBlock, InputSize } from '@/types';
 import {
   isinCodes,
   isinPatialRegEx,
@@ -24,6 +24,7 @@ export interface MultiStyleInputProps {
   tabIndex?: number;
   className?: string;
   style?: React.CSSProperties;
+  size?: InputSize;
   onItemSelected?: (id: string, option: string) => void;
   onChange?: (text: string, position: number) => void;
   onCaretPositionChange?: (position: number) => void;
@@ -214,9 +215,9 @@ export const MultiStyleInput: React.FC<MultiStyleInputProps> = ({
         !b.customProps
           ? b
           : {
-              ...b,
-              customProps: { title: b.customProps, position: 'top' },
-            },
+            ...b,
+            customProps: { title: b.customProps, position: 'top' },
+          },
       ),
     [textBlocks],
   );

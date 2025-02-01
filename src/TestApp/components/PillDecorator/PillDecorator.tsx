@@ -8,6 +8,7 @@ export const PillDecorator = ({
   start,
   end,
   cursorPosition,
+  size,
   clasName,
   style,
 }: ComponentProps) => {
@@ -66,7 +67,7 @@ export const PillDecorator = ({
   return (
     <div
       ref={divRef}
-      className={[s.pillDecorator, clasName ?? ''].join(' ')}
+      className={[s.pillDecorator, s[`font-${size}`], clasName ?? ''].join(' ')}
       style={{
         top,
         left,

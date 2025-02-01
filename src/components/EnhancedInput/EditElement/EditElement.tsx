@@ -5,16 +5,15 @@ import {
   useOptions,
   useViewPort,
 } from '@/state/useState';
-import s from './style.module.less';
 import { useSizeWatcher } from '@/hooks/useSizeWatcher';
 import { findChangePosition, getCursorPosition, trimCR } from './functions';
 import { KeyBoardkeys } from '@/util/constants';
+import s from './style.module.less';
 
 export const EditElement = React.memo(() => {
   const preRef = React.useRef<HTMLPreElement | null>(null);
   const {
-    className,
-    style,
+    size,
     onItemSelected,
     onChange,
     onCaretPositionChange,
@@ -209,8 +208,7 @@ export const EditElement = React.memo(() => {
   return (
     <pre
       id="si-edit-element"
-      className={[s.editElement, className].join(' ')}
-      style={style}
+      className={[s.editElement, s[`font-${size}`]].join(' ')}
       contentEditable="true"
       ref={setReference}
       autoCapitalize="none"

@@ -1,7 +1,7 @@
 {
   "homepage": "https://github.com/markgregg/multi-style-input",
   "name": "multi-style-input",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "Powerfulview input component for react",
   "type": "module",
   "keywords": [

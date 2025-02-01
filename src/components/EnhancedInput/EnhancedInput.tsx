@@ -1,5 +1,4 @@
 import React from 'react';
-import s from './style.module.less';
 import { EditElement } from './EditElement';
 import {
   useBlockStore,
@@ -8,16 +7,17 @@ import {
   useViewPort,
 } from '@/state/useState';
 import { DropDown } from './DropDown';
+import s from './style.module.less';
 
 export const EnhancedInput = React.memo(() => {
-  const { tabIndex, className, style } = useConfig((state) => state);
+  const { tabIndex, className, style, size = 'normal' } = useConfig((state) => state);
   const { customElements, dropDown, caretPosition, update } = useBlockStore(
     (state) => state,
   );
   const { top, left, height } = useViewPort((state) => state);
   const { text, textBlocks } = useManaged((state) => state);
 
-  React.useEffect(() => update(text, textBlocks), [text, textBlocks]);
+  React.useEffect(() => update(text, textBlocks, size), [text, textBlocks, size]);
 
   const visibleElements = React.useMemo(
     () =>
@@ -33,7 +33,7 @@ export const EnhancedInput = React.memo(() => {
     <div
       tabIndex={tabIndex ?? -1}
       id="si-enhanced-Input"
-      className={[s.enhancedInput, className].join(' ')}
+      className={[s.enhancedInput, s[`font-${size}`], className].join(' ')}
       style={style}
     >
       <div className={s.editArea}>
@@ -61,6 +61,7 @@ export const EnhancedInput = React.memo(() => {
               cursorPosition={caretPosition}
               textElement={element.textElement}
               customProps={element.customProps}
+              size={size}
               style={element.decoratorStyle}
             />
           </div>

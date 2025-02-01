@@ -4,6 +4,7 @@ import s from './style.module.less';
 
 export const DropDown = ({
   options,
+  size,
   onOptionSelected,
   activeIndex,
   onActiveOptionChanged,
@@ -29,7 +30,7 @@ export const DropDown = ({
   return (
     <div
       id="drop-down-list"
-      className={s.dropDownList}
+      className={[s.dropDownList, s[`font-${size}`]].join(' ')}
       onMouseEnter={onMouseEnteredDropDown}
       onMouseLeave={onMouseLeftDropDown}
     >

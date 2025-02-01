@@ -1,4 +1,3 @@
-export * from './uiProperties';
 export * from './multiStyleInputProps';
 export * from './decoratedBlock';
 export * from './dropDownProps';

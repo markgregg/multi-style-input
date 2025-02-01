@@ -1,3 +1,5 @@
+@import (reference) '../../../util/common.less';
+
 .titleDecorator {
   display: block;
   position: absolute;
@@ -6,4 +8,19 @@
   color: black;
   border-radius: 3px;
   font-size: 11px;
+}
+
+.font-compact {
+  line-height: @line-height-compact;
+  font-size: @font-size-compact;
+}
+
+.font-normal {
+  line-height: @line-height;
+  font-size: @font-size;
+}
+
+.font-large {
+  line-height: @line-height-large;
+  font-size: @font-size-large;
 }

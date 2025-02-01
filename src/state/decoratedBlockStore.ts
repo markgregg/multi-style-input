@@ -7,6 +7,7 @@ import {
 import {
   BlockEventProps,
   DecoratedBlock,
+  InputSize,
   SmartElementMouseEvent,
 } from '@/types';
 import {
@@ -84,12 +85,12 @@ export const createDecoratedBlockStore = ({
           const blockElements: HtmlTextElement[] = [
             ...(start > lastPos
               ? [
-                  createHtmlText(
-                    lastPos,
-                    lastPos + (start - lastPos - 1),
-                    line.substring(lastPos - position, start - position),
-                  ),
-                ]
+                createHtmlText(
+                  lastPos,
+                  lastPos + (start - lastPos - 1),
+                  line.substring(lastPos - position, start - position),
+                ),
+              ]
               : []),
             createHtmlStyledText(
               start,
@@ -372,21 +373,23 @@ export const createDecoratedBlockStore = ({
     customElements: [],
     dropDown: null,
     caretPosition: 0,
+    currentSize: 'normal',
     setParantElement: (parentElement: HTMLPreElement) =>
       set(() => ({ parentElement })),
     updateText: (text: string) => set(() => ({ text })),
     updateCaretPosition: (caretPosition: number) =>
       set(() => ({ caretPosition })),
-    update: (newText: string, newTextBlocks: DecoratedBlock[]) =>
+    update: (newText: string, newTextBlocks: DecoratedBlock[], size: InputSize) =>
       set((state) => {
-        const { parentElement, text, textBlocks, caretPosition } = state;
+        const { parentElement, text, textBlocks, caretPosition, currentSize } = state;
         if (
           !parentElement ||
           (text.length > 1 &&
             text === newText &&
             JSON.stringify(textBlocks) === JSON.stringify(newTextBlocks) &&
             !closeSpan(text, textBlocks) &&
-            text[text.length - 1] !== '\n')
+            text[text.length - 1] !== '\n' &&
+            currentSize === size)
         ) {
           return {};
         }
@@ -432,15 +435,16 @@ export const createDecoratedBlockStore = ({
           text: newText,
           textBlocks: newTextBlocks,
           customElements,
+          currentSize: size,
           dropDown: dropDownId
             ? ({
-                id: dropDownId,
-                dropDown,
-                ...getElementPosition(
-                  document.getElementById(dropDownId) as HTMLElement,
-                  true,
-                ),
-              } as DropDownListElement)
+              id: dropDownId,
+              dropDown,
+              ...getElementPosition(
+                document.getElementById(dropDownId) as HTMLElement,
+                true,
+              ),
+            } as DropDownListElement)
             : null,
         };
       }),

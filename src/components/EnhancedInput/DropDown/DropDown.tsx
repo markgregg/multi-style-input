@@ -8,7 +8,7 @@ import {
 import s from './style.module.less';
 
 export const DropDown = React.memo(() => {
-  const { DropDownComponent, onItemSelected } = useConfig((state) => state);
+  const { size, DropDownComponent, onItemSelected } = useConfig((state) => state);
   const {
     id,
     top,
@@ -57,6 +57,7 @@ export const DropDown = React.memo(() => {
     >
       {DropDownComponent && (
         <DropDownComponent
+          size={size}
           onMouseLeftDropDown={handleLeftMouseDown}
           onMouseEnteredDropDown={handleMouseEnter}
           options={options}
