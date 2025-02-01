@@ -176,9 +176,9 @@ export const SmartInputApp = () => {
         !b.customProps
           ? b
           : {
-              ...b,
-              customProps: { title: b.customProps, position: 'top' },
-            },
+            ...b,
+            customProps: { title: b.customProps, position: 'top' },
+          },
       ),
     [textBlocks],
   );
@@ -196,7 +196,7 @@ export const SmartInputApp = () => {
 
   return (
     <div className={s.smartFilterPage}>
-      <h4>Smart Input</h4>
+      <h4>Multi Styled Input</h4>
       <div className={s.filterBar}>
         <SmartInput
           text={text}

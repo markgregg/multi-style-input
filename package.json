@@ -1,6 +1,6 @@
 {
-  "homepage": "https://github.com/markgregg/smart-input",
-  "name": "smart-input",
+  "homepage": "https://github.com/markgregg/multi-styled-input",
+  "name": "multi-styled-input",
   "version": "0.0.1",
   "description": "Powerfulview input component for react",
   "type": "module",
@@ -11,9 +11,9 @@
   ],
   "author": "Mark Gregg <gregg.mark@gmail.com> (https://github.com/markgregg)",
   "license": "MIT",
-  "main": "dist/smart-input.min.js",
-  "main::production": "dist/smart-input.min.js",
-  "main::development": "dist/smart-input.js",
+  "main": "dist/multi-styled-input.min.js",
+  "main::production": "dist/multi-styled-input.min.js",
+  "main::development": "dist/multi-styled-input.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"

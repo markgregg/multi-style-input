@@ -210,9 +210,9 @@ export const SmartInput: React.FC<SmartInputProps> = ({
         !b.customProps
           ? b
           : {
-              ...b,
-              customProps: { title: b.customProps, position: 'top' },
-            },
+            ...b,
+            customProps: { title: b.customProps, position: 'top' },
+          },
       ),
     [textBlocks],
   );
@@ -233,7 +233,7 @@ export const SmartInput: React.FC<SmartInputProps> = ({
 
   return (
     <div className={s.smartFilterPage}>
-      <h4>Smart Input</h4>
+      <h4>Multi Styled Input</h4>
       <div className={s.filterBar}>
         <SmartInputComp
           text={text}

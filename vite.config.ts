@@ -7,7 +7,7 @@ import dts from 'vite-plugin-dts'
 import { getBabelOutputPlugin } from '@rollup/plugin-babel'
 import * as packageJson from './package.json'
 
-const projectName = 'smart-input';
+const projectName = 'multi-styled-input';
 
 export default defineConfig(({ mode }) => {
   const debug = mode !== 'production';

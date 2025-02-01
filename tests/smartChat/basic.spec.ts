@@ -2,25 +2,25 @@ import { expect } from "@playwright/test";
 import { Given, Scenario, When, Then } from "../common/ghkerkin";
 
 Scenario(
-  `Smart input is shown`,
+  `Multi Styled Input is shown`,
   async ({
     smartInputPage: {
       mainComponent,
       use,
     },
   }) => {
-    await Given('the smart input component is shwon', async () => {
+    await Given('the multi styled Input component is shwon', async () => {
       await use('');
     });
 
     await Then('the control appears as expected', async () => {
-      await expect(mainComponent).toHaveScreenshot(`smart-input-is-shown.png`);
+      await expect(mainComponent).toHaveScreenshot(`multi-styled-input-is-shown.png`);
     });
   }
 );
 
 Scenario(
-  `Smart input is shown with focus`,
+  `Multi Styled Input is shown with focus`,
   async ({
     smartInputPage: {
       mainComponent,
@@ -28,16 +28,16 @@ Scenario(
       use,
     },
   }) => {
-    await Given('the smart input component is shown', async () => {
+    await Given('the multi styled Input component is shown', async () => {
       await use('');
     });
 
-    await When('the smart input component is in focus', async () => {
+    await When('the multi styled Input component is in focus', async () => {
       editComponent.focus();
     });
 
     await Then('a border will be sbown', async () => {
-      await expect(mainComponent).toHaveScreenshot(`smart-input-has-focus-border.png`);
+      await expect(mainComponent).toHaveScreenshot(`multi-styled-input-has-focus-border.png`);
     });
   }
 );
