@@ -1,6 +1,7 @@
 import { ComponentProps } from '../componentProps';
 import { DecoratedBlock } from '../decoratedBlock';
 import { DropDownOptions } from '../dropDownOptions';
+import { InputSize } from '../multiStyleInputProps';
 
 export interface TextElement {
     text: string;
@@ -38,8 +39,9 @@ export interface DecoratedBlockState {
     customElements: DecoratedElement[];
     dropDown: DropDownListElement | null;
     caretPosition: number;
+    currentSize: InputSize;
     setParantElement: (parentElement: HTMLPreElement) => void;
     updateText: (text: string) => void;
     updateCaretPosition: (caretPosition: number) => void;
-    update: (text: string, textBlocks: DecoratedBlock[]) => void;
+    update: (text: string, textBlocks: DecoratedBlock[], size: InputSize) => void;
 }

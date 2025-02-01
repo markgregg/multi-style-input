@@ -1,3 +1,5 @@
+import { InputSize } from './multiStyleInputProps';
+
 export interface ComponentProps {
     id: string;
     clasName?: string;
@@ -6,6 +8,7 @@ export interface ComponentProps {
     start: number;
     end: number;
     cursorPosition: number;
+    size?: InputSize;
     textElement: HTMLElement;
     customProps?: any;
 }

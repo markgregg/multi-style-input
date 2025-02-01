@@ -1,11 +1,12 @@
 import { BlockEventProps } from '../blockEventProps';
 import { DropDownProps } from '../dropDownProps';
-import { UIProperties } from '../uiProperties';
+import { InputSize } from '../multiStyleInputProps';
 
-export interface ConfigState extends UIProperties, BlockEventProps {
+export interface ConfigState extends BlockEventProps {
     tabIndex?: number;
     className?: string;
     style?: React.CSSProperties;
+    size?: InputSize;
     DropDownComponent?: React.ComponentType<DropDownProps>;
     onItemSelected?: (id: string, option: string) => void;
     onChange?: (text: string, position: number) => void;
