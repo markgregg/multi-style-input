@@ -85,12 +85,12 @@ export const createDecoratedBlockStore = ({
           const blockElements: HtmlTextElement[] = [
             ...(start > lastPos
               ? [
-                createHtmlText(
-                  lastPos,
-                  lastPos + (start - lastPos - 1),
-                  line.substring(lastPos - position, start - position),
-                ),
-              ]
+                  createHtmlText(
+                    lastPos,
+                    lastPos + (start - lastPos - 1),
+                    line.substring(lastPos - position, start - position),
+                  ),
+                ]
               : []),
             createHtmlStyledText(
               start,
@@ -355,10 +355,7 @@ export const createDecoratedBlockStore = ({
     return start + length + 1 >= newText.length;
   };
 
-  const getElementPosition = (
-    htmlElement: HTMLElement,
-    isDropDown?: boolean,
-  ) => ({
+  const getElementPosition = (htmlElement: HTMLElement, isDropDown?: true) => ({
     top:
       htmlElement.offsetTop + (isDropDown ? htmlElement.offsetHeight + 2 : 0),
     left: htmlElement.offsetLeft,
@@ -366,12 +363,72 @@ export const createDecoratedBlockStore = ({
     height: htmlElement.offsetHeight,
   });
 
+  const extractCustomElements = (
+    newTextBlocks: DecoratedBlock[],
+  ): DecoratedElement[] =>
+    newTextBlocks
+      .filter((block) => 'Decorator' in block)
+      .map((block) => {
+        const {
+          id,
+          start,
+          length,
+          Decorator,
+          clasName,
+          decoratorStyle,
+          customProps,
+        } = block;
+        const textElement = document.getElementById(id);
+        if (!textElement) {
+          return null;
+        }
+        const elementText = textElement.textContent ?? '';
+        return {
+          id,
+          text: elementText,
+          start,
+          end: start + elementText.length,
+          length,
+          Decorator,
+          textElement,
+          clasName,
+          decoratorStyle,
+          customProps,
+          ...getElementPosition(textElement),
+        };
+      })
+      .filter((block) => block !== null) as DecoratedElement[];
+
+  const extractDropDowns = (
+    newTextBlocks: DecoratedBlock[],
+  ): DropDownListElement[] =>
+    newTextBlocks
+      .filter((block) => 'dropDown' in block)
+      .map((block) => {
+        const { id, start, dropDown } = block;
+        const textElement = document.getElementById(id);
+        if (!textElement) {
+          return null;
+        }
+        const elementText = textElement.textContent ?? '';
+        return {
+          id,
+          start,
+          end: start + elementText.length,
+          dropDown,
+          textElement,
+          ...getElementPosition(textElement, true),
+        };
+      })
+      .filter((block) => block !== null) as DropDownListElement[];
+
   return create<DecoratedBlockState>((set) => ({
+    undoBuffer: [],
     text: '',
     textBlocks: [],
     parentElement: null,
     customElements: [],
-    dropDown: null,
+    dropDowns: [],
     caretPosition: 0,
     currentSize: 'normal',
     setParantElement: (parentElement: HTMLPreElement) =>
@@ -379,9 +436,20 @@ export const createDecoratedBlockStore = ({
     updateText: (text: string) => set(() => ({ text })),
     updateCaretPosition: (caretPosition: number) =>
       set(() => ({ caretPosition })),
-    update: (newText: string, newTextBlocks: DecoratedBlock[], size: InputSize) =>
+    update: (
+      newText: string,
+      newTextBlocks: DecoratedBlock[],
+      size: InputSize,
+    ) =>
       set((state) => {
-        const { parentElement, text, textBlocks, caretPosition, currentSize } = state;
+        const {
+          parentElement,
+          text,
+          textBlocks,
+          caretPosition,
+          currentSize,
+          undoBuffer,
+        } = state;
         if (
           !parentElement ||
           (text.length > 1 &&
@@ -397,56 +465,27 @@ export const createDecoratedBlockStore = ({
         const newPosition = findEndOfChange(text, newText) ?? caretPosition;
         setCursorPosition(parentElement, newPosition);
 
-        const customElements = newTextBlocks
-          .filter((block) => 'Decorator' in block)
-          .map((block) => {
-            const {
-              id,
-              start,
-              length,
-              Decorator,
-              clasName,
-              decoratorStyle,
-              customProps,
-            } = block;
-            const textElement = document.getElementById(id);
-            if (!textElement) {
-              return null;
-            }
-            const elementText = textElement.textContent ?? '';
-            return {
-              id,
-              text: elementText,
-              start,
-              end: start + elementText.length,
-              length,
-              Decorator,
-              textElement,
-              clasName,
-              decoratorStyle,
-              customProps,
-              ...getElementPosition(textElement, false),
-            };
-          })
-          .filter((block) => block !== null) as DecoratedElement[];
-        const { id: dropDownId, dropDown } =
-          newTextBlocks.find((block) => 'dropDown' in block) ?? {};
+        const customElements = extractCustomElements(newTextBlocks);
+        const dropDowns = extractDropDowns(newTextBlocks);
+
         return {
+          undoBuffer: [...undoBuffer, newText],
           text: newText,
           textBlocks: newTextBlocks,
           customElements,
           currentSize: size,
-          dropDown: dropDownId
-            ? ({
-              id: dropDownId,
-              dropDown,
-              ...getElementPosition(
-                document.getElementById(dropDownId) as HTMLElement,
-                true,
-              ),
-            } as DropDownListElement)
-            : null,
+          dropDowns,
         };
       }),
+    undo: () => {
+      let text = '';
+      set((state) => {
+        text = state.undoBuffer.pop() ?? '';
+        return {
+          undoBuffer: state.undoBuffer.slice(0, state.undoBuffer.length - 1),
+        };
+      });
+      return text;
+    },
   }));
 };

@@ -1,11 +1,9 @@
-import { InputSize } from "./multiStyleInputProps";
+import { InputSize } from './multiStyleInputProps';
 
 export interface DropDownProps {
   options: string[];
   size?: InputSize;
   onOptionSelected: (option: string) => void;
-  activeIndex: number;
+  activeIndex: number | null;
   onActiveOptionChanged: (activeIndex: number) => void;
-  onMouseEnteredDropDown: () => void;
-  onMouseLeftDropDown: () => void;
 }

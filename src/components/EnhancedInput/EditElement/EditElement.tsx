@@ -13,6 +13,7 @@ import s from './style.module.less';
 export const EditElement = React.memo(() => {
   const preRef = React.useRef<HTMLPreElement | null>(null);
   const {
+    uneditable,
     size,
     onItemSelected,
     onChange,
@@ -34,12 +35,13 @@ export const EditElement = React.memo(() => {
     parentElement,
     text,
     caretPosition,
-    dropDown,
     setParantElement,
     updateText,
     updateCaretPosition,
   } = useBlockStore((state) => state);
-  const { activeOption, next, prev } = useOptions((state) => state);
+  const { id, activeOption, next, prev, clearOptions } = useOptions(
+    (state) => state,
+  );
 
   useSizeWatcher(preRef.current, setSize);
 
@@ -172,22 +174,23 @@ export const EditElement = React.memo(() => {
         } */
           break;
         case KeyBoardkeys.ArrowUp:
-          if (dropDown) {
+          if (id) {
             prev();
             handled = true;
           }
           break;
         case KeyBoardkeys.ArrowDown:
-          if (dropDown) {
+          if (id) {
             next();
             handled = true;
           }
           break;
         case KeyBoardkeys.Space:
         case KeyBoardkeys.Enter:
-          if (dropDown) {
-            if (onItemSelected) {
-              onItemSelected(dropDown.id ?? '', activeOption);
+          if (id) {
+            if (onItemSelected && activeOption) {
+              clearOptions();
+              onItemSelected(id ?? '', activeOption);
               handled = true;
             }
           }
@@ -202,14 +205,14 @@ export const EditElement = React.memo(() => {
         onKeyDown(event);
       }
     },
-    [dropDown, activeOption, onKeyDown, next, prev, onItemSelected],
+    [id, activeOption, activeOption, onKeyDown, next, prev, onItemSelected],
   );
 
   return (
     <pre
       id="si-edit-element"
       className={[s.editElement, s[`font-${size}`]].join(' ')}
-      contentEditable="true"
+      contentEditable={!uneditable}
       ref={setReference}
       autoCapitalize="none"
       autoCorrect="off"

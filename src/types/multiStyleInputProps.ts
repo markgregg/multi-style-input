@@ -2,7 +2,6 @@ import { BlockEventProps } from './blockEventProps';
 import { DecoratedBlock } from './decoratedBlock';
 import { DropDownProps } from './dropDownProps';
 
-
 export type InputSize = 'compact' | 'normal' | 'large';
 
 export interface MultiStyleInputProps extends BlockEventProps {
@@ -12,6 +11,7 @@ export interface MultiStyleInputProps extends BlockEventProps {
   className?: string;
   style?: React.CSSProperties;
   size?: InputSize;
+  uneditable?: true;
   DropDownComponent?: React.ComponentType<DropDownProps>;
   onItemSelected?: (id: string, option: string) => void;
   onChange?: (text: string, position: number) => void;

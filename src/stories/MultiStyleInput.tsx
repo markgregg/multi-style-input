@@ -25,6 +25,7 @@ export interface MultiStyleInputProps {
   className?: string;
   style?: React.CSSProperties;
   size?: InputSize;
+  uneditable?: true;
   onItemSelected?: (id: string, option: string) => void;
   onChange?: (text: string, position: number) => void;
   onCaretPositionChange?: (position: number) => void;
@@ -215,9 +216,9 @@ export const MultiStyleInput: React.FC<MultiStyleInputProps> = ({
         !b.customProps
           ? b
           : {
-            ...b,
-            customProps: { title: b.customProps, position: 'top' },
-          },
+              ...b,
+              customProps: { title: b.customProps, position: 'top' },
+            },
       ),
     [textBlocks],
   );

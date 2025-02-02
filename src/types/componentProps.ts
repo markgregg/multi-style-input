@@ -1,4 +1,4 @@
-import { InputSize } from "./multiStyleInputProps";
+import { InputSize } from './multiStyleInputProps';
 
 export interface ComponentProps {
   /* unique id for the component */

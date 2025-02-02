@@ -26,6 +26,7 @@ export const StateProvider = React.memo(
       className,
       style,
       size,
+      uneditable,
       DropDownComponent,
       onItemSelected,
       onChange,
@@ -44,6 +45,7 @@ export const StateProvider = React.memo(
       text,
       textBlocks,
     } = props;
+
     const configStore = React.useMemo(
       () => createConfigStore(props),
       [
@@ -51,6 +53,7 @@ export const StateProvider = React.memo(
         className,
         style,
         size,
+        uneditable,
         DropDownComponent,
         onItemSelected,
         onChange,
@@ -65,7 +68,7 @@ export const StateProvider = React.memo(
         onMouseLeave,
         onMouseOver,
         onKeyDown,
-        onKeyUp
+        onKeyUp,
       ],
     );
 

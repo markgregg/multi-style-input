@@ -8,8 +8,6 @@ export const DropDown = ({
   onOptionSelected,
   activeIndex,
   onActiveOptionChanged,
-  onMouseEnteredDropDown,
-  onMouseLeftDropDown,
 }: DropDownProps) => {
   const optionChanged = React.useCallback(
     (index: number) => {
@@ -31,11 +29,11 @@ export const DropDown = ({
     <div
       id="drop-down-list"
       className={[s.dropDownList, s[`font-${size}`]].join(' ')}
-      onMouseEnter={onMouseEnteredDropDown}
-      onMouseLeave={onMouseLeftDropDown}
     >
       <ul
-        aria-activedescendant={options[activeIndex]}
+        aria-activedescendant={
+          activeIndex !== null ? options[activeIndex] : undefined
+        }
         role="listbox"
         tabIndex={-1}
       >

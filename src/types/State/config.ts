@@ -7,6 +7,7 @@ export interface ConfigState extends BlockEventProps {
   className?: string;
   style?: React.CSSProperties;
   size?: InputSize;
+  uneditable?: boolean;
   DropDownComponent?: React.ComponentType<DropDownProps>;
   onItemSelected?: (id: string, option: string) => void;
   onChange?: (text: string, position: number) => void;

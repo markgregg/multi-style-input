@@ -8,16 +8,23 @@ import {
 } from '@/state/useState';
 import { DropDown } from './DropDown';
 import s from './style.module.less';
+import { CustomElement } from './CustomElement';
 
 export const EnhancedInput = React.memo(() => {
-  const { tabIndex, className, style, size = 'normal' } = useConfig((state) => state);
-  const { customElements, dropDown, caretPosition, update } = useBlockStore(
-    (state) => state,
-  );
+  const {
+    tabIndex,
+    className,
+    style,
+    size = 'normal',
+  } = useConfig((state) => state);
+  const { customElements, dropDowns, update } = useBlockStore((state) => state);
   const { top, left, height } = useViewPort((state) => state);
   const { text, textBlocks } = useManaged((state) => state);
 
-  React.useEffect(() => update(text, textBlocks, size), [text, textBlocks, size]);
+  React.useEffect(
+    () => update(text, textBlocks, size),
+    [text, textBlocks, size],
+  );
 
   const visibleElements = React.useMemo(
     () =>
@@ -39,34 +46,11 @@ export const EnhancedInput = React.memo(() => {
       <div className={s.editArea}>
         <EditElement />
         {visibleElements.map((element) => (
-          <div
-            key={element.id}
-            style={{
-              position: 'absolute',
-              lineHeight: 'normal',
-              left: element.left - left,
-              top: element.top - top,
-              width: element.width,
-              height:
-                element.top - top + element.height < height
-                  ? element.height
-                  : height - (element.top - top),
-            }}
-          >
-            <element.Decorator
-              id={element.id}
-              text={element.text}
-              start={element.start}
-              end={element.end}
-              cursorPosition={caretPosition}
-              textElement={element.textElement}
-              customProps={element.customProps}
-              size={size}
-              style={element.decoratorStyle}
-            />
-          </div>
+          <CustomElement key={element.id} element={element} />
         ))}
-        {dropDown && <DropDown />}
+        {dropDowns.map((dropDown) => (
+          <DropDown key={dropDown.id} dropDown={dropDown} />
+        ))}
       </div>
     </div>
   );
